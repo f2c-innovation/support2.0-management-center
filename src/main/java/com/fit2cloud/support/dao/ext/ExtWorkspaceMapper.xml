@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtWorkspaceMapper">
+
+    <resultMap id="WorkspaceDtoMap" type="com.fit2cloud.support.dto.WorkspaceDTO"
+               extends="com.fit2cloud.commons.server.base.mapper.WorkspaceMapper.BaseResultMap">
+        <result column="organizationName" jdbcType="VARCHAR" property="organizationName"/>
+        <result column="countAuthorizedUser" jdbcType="BIGINT" property="countAuthorizedUser"/>
+    </resultMap>
+
+    <resultMap id="WorkspaceTreeNode" type="com.fit2cloud.commons.server.model.TreeNode">
+        <result property="id" column="organization_id"/>
+        <result property="name" column="organization_name"/>
+        <collection property="children" column="children" ofType="com.fit2cloud.commons.server.model.TreeNode">
+            <result property="id" column="id"/>
+            <result property="name" column="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="paging" resultMap="WorkspaceDtoMap">
+        select
+        workspace.*,
+        organization.name as organizationName,
+        (select count(user_role.id)
+        from user_role
+        where user_role.source_id = workspace.id) as countAuthorizedUser
+        from workspace
+        join organization
+        where workspace.organization_id = organization.id
+        <if test="map.id!=null">
+            and workspace.id = #{map.id}
+        </if>
+        <if test="map.name!=null">
+            and workspace.name like #{map.name}
+        </if>
+        <if test="map.organizationId!=null">
+            and workspace.organization_id = #{map.organizationId}
+        </if>
+        <if test="map.role!=null">
+            and workspace.id in
+            <foreach collection="map.resourceIds" item="resourceId" index="index" open="(" close=")" separator=",">
+                #{resourceId}
+            </foreach>
+        </if>
+        <if test="map.sort==null">
+            order by create_time desc
+        </if>
+        <if test="map.sort!=null">
+            order by ${map.sort}
+        </if>
+    </select>
+    <select id="linkWorkspacePaging" resultMap="com.fit2cloud.commons.server.base.mapper.WorkspaceMapper.BaseResultMap">
+        select *
+        from workspace
+        where organization_id = #{organizationId}
+    </select>
+    <select id="linkOrgAdminPaging" resultMap="com.fit2cloud.support.dao.ext.ExtUserMapper.userDtoMap">
+        select user.*
+        from user
+                 join user_role
+        where user.id = user_role.user_id
+          and user_role.source_id = #{organizationId}
+    </select>
+    <select id="authorizeUsersPaging" resultMap="com.fit2cloud.support.dao.ext.ExtUserMapper.userDtoMap">
+        select user.*
+        from user
+                 join user_role
+        where user.id = user_role.user_id
+          and user_role.source_id = #{workspaceId}
+    </select>
+
+    <select id="selectWorkspaceTreeNode" resultMap="WorkspaceTreeNode">
+        SELECT
+        organization.name AS organization_name,
+        workspace.*
+        FROM workspace
+        JOIN organization ON organization_id = organization.id
+        JOIN user_role ON source_id = organization_id
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+            <if test="organizationId != null">
+                and organization_id = #{organizationId}
+            </if>
+        </where>
+    </select>
+</mapper>

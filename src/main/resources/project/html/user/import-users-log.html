@@ -1,0 +1,48 @@
+<div flex ng-controller="ImportExtraUserLogController">
+    <div ng-if="show">
+        <md-toolbar class="content-toolbar">
+            <div class="md-toolbar-tools" style="padding-right: 0;">
+                <div>ldap同步日志</div>
+                <div flex></div>
+                <md-button class="md-primary" ng-click="toggleForm()" style="height: 100%;padding: 0;margin: 0">
+                    <div>关闭信息</div>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <div class="md-padding" layout="column" flex="100">
+            <filter-tools conditions="conditions" results="filters" search="'true'" execute="extraUsersLog()">
+                <div class="filter-item">
+                    <md-button class="md-icon-button md-whiteframe-1dp" ng-click="extraUsersLog()">
+                        <md-tooltip md-delay="300">刷新</md-tooltip>
+                        <md-icon>refresh</md-icon>
+                    </md-button>
+                </div>
+            </filter-tools>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>账号</th>
+                    <th>邮箱</th>
+                    <th>用户名</th>
+                    <th>自动分配工作空间时间</th>
+                    <th>状态</th>
+                    <th>工作空间名称</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.userName}}</td>
+                    <td>{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.groupEnvName}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table-pagination pagination="pagination"></table-pagination>
+        </div>
+    </div>
+</div>

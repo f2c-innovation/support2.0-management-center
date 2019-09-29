@@ -1,0 +1,36 @@
+<div ng-controller="TreeController" class="content-backdrop" ng-cloak>
+    <div cg-busy="{promise:loadingLayer,minDuration:500}">
+        <md-toolbar class="content-toolbar">
+            <div class="md-toolbar-tools">
+                <div>用户名 : &nbsp;&nbsp;</div>
+                <input class="md-primary" ng-model="userId">
+                </input>
+                <div> &nbsp;密码 : &nbsp;&nbsp;</div>
+                <input class="md-primary" ng-model="password">
+                </input>
+                <md-button class="md-primary" ng-click="getSelected()">
+                    <md-icon>done</md-icon>
+                    获取已选择
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div class="md-padding" layout="column">
+            <div layout="row">
+                <div flex>
+                    <div ng-if="item">
+                        <div>id：{{item.id}}</div>
+                        <div>userId：{{item.userId}}</div>
+                        <div>accessKey：{{item.accessKey}}</div>
+                        <div>secretKey：{{item.secretKey}}</div>
+                        <div>roleId：{{item.roleId}}</div>
+                        <div>orgId：{{item.orgId}}</div>
+                        <div>status：{{item.status}}</div>
+                        <div>createTime：{{item.createTime}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

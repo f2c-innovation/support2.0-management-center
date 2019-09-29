@@ -1,0 +1,53 @@
+version: '2.1'
+services:
+
+  support2.0-management-center:
+    image: registry.fit2cloud.com/innovation/support2.0-management-center:master
+    container_name: support2.0-management-center
+    ports:
+      - 8088:8088
+    volumes:
+      - host-opt-fit2cloud-conf:/opt/fit2cloud/conf
+      - host-opt-fit2cloud-logs:/opt/fit2cloud/logs
+    mem_limit: 1024m
+    networks:
+      - support-network
+
+  mysql:
+    image: registry.fit2cloud.com/fit2cloud2/mysql:5.7.24
+    container_name: mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    env_file:
+      - /opt/fit2cloud/conf/mysql.env
+    ports:
+      - 3306:3306
+    volumes:
+      - /opt/fit2cloud/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - /opt/fit2cloud/bin/mysql:/docker-entrypoint-initdb.d/
+      - host-opt-fit2cloud-mysql-data:/var/lib/mysql
+    networks:
+      - support-network
+
+volumes:
+  host-opt-fit2cloud-conf:
+    driver_opts:
+      type: none
+      device: /opt/fit2cloud/conf
+      o: bind
+  host-opt-fit2cloud-logs:
+    driver_opts:
+      type: none
+      device: /opt/fit2cloud/logs
+      o: bind
+  host-opt-fit2cloud-mysql-data:
+    driver_opts:
+      type: none
+      device: /opt/fit2cloud/data/mysql
+      o: bind
+
+networks:
+  support-network:

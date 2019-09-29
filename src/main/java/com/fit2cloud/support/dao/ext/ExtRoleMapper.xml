@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtRoleMapper">
+
+    <resultMap id="roleDtoMap" type="com.fit2cloud.support.dto.RoleDTO"
+               extends="com.fit2cloud.commons.server.base.mapper.RoleMapper.BaseResultMap">
+
+    </resultMap>
+
+    <select id="paging" resultMap="roleDtoMap">
+        select *
+        from role
+        <where>
+            <if test="map.id != null">
+                AND role.id = #{map.id}
+            </if>
+            <if test="map.name!=null">
+                AND role.name like #{map.name}
+            </if>
+        </where>
+
+        order by type desc,parent_id asc
+    </select>
+
+    <select id="getRolesByResourceIds" resultMap="com.fit2cloud.commons.server.base.mapper.RoleMapper.BaseResultMap">
+        SELECT DISTINCT role.* FROM role LEFT JOIN user_role ON role.id = user_role.role_id
+        WHERE user_role.user_id = #{userId}
+        <if test="resourceIds!=null and resourceIds.size>0">
+            and user_role.source_id in
+            <foreach collection="resourceIds" item="resourceId" index="index" open="(" close=")" separator=",">
+                #{resourceId}
+            </foreach>
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,139 @@
+<div flex ng-controller="ImportExtraUserController">
+    <div wizard="wizard" ng-if="show">
+        <wizard-step id="1">
+            <div class="md-padding" layout="column" flex="100">
+                <filter-tools conditions="conditions" results="filters" search="'true'" execute="extraUsers()">
+                    <div class="filter-item">
+                        <md-button class="md-icon-button md-whiteframe-1dp" ng-click="extraUsers()">
+                            <md-tooltip md-delay="300">刷新</md-tooltip>
+                            <md-icon>refresh</md-icon>
+                        </md-button>
+                    </div>
+                </filter-tools>
+
+                <table class="table" cg-busy="{promise:loadingLayer,minDuration:500}">
+                    <thead>
+                    <tr>
+                        <th>
+                            <md-checkbox md-no-ink aria-label="是否启用"
+                                         ng-model="check"
+                                         ng-click="clickAllCheck(check)"
+                                         class="md-primary"></md-checkbox>
+                        </th>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            姓名
+                        </th>
+                        <th>
+                            邮箱
+                        </th>
+                        <th>
+                            部门
+                        </th>
+                        <th>
+                            同步日期
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in items">
+                        <td>
+                            <md-checkbox md-no-ink aria-label="是否启用" ng-model="item.enable"
+                                         ng-click="clickChecked(!item.enable,item)"
+                                         class="md-primary"></md-checkbox>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.displayName}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.deptName}}</td>
+                        <td>{{item.syncTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table-pagination pagination="pagination"></table-pagination>
+            </div>
+        </wizard-step>
+        <wizard-step id="2">
+            <form name="addUserForm" class="md-padding">
+                <md-input-container flex="100" class="md-block" flex-gt-sm>
+                    <label>用户名</label>
+                    <md-select name="ids" ng-model="item.ids"
+                               multiple required>
+                        <md-option ng-value="item.id" ng-repeat="item in items">{{item.displayName}}</md-option>
+                    </md-select>
+                    <div ng-messages="addUserForm.ids.$error">
+                        <div ng-message="required">必填.</div>
+                    </div>
+                </md-input-container>
+
+
+                <div ng-repeat="roleInfo in item.roleInfoList" style="margin-top: 30px;margin-bottom: 30px">
+                    <md-input-container class="md-block" layout-gt-xs="row">
+                        <label>用户类型</label>
+                        <md-select name="adminRoleId" ng-model="roleInfo.roleId" required
+                                   ng-change="changeRole(roleInfo,roleInfo.roleId)">
+                            <md-option ng-value="role.id"
+                                       ng-repeat="role in roles"
+                                       ng-if="filterRole(role,roleInfo)">
+                                {{role.name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="addUserForm.adminRoleId.$error">
+                            <div ng-message="required">必填.</div>
+                        </div>
+                        <md-icon style="cursor:pointer;"
+                                 ng-if="item.roleInfoList.length>1"
+                                 ng-click=" subtractLine(roleInfo)  ">clear
+                        </md-icon>
+                    </md-input-container>
+
+                    <md-switch class="md-primary" aria-label="enable" layout-align="left"
+                               ng-if="roleInfo.roleType===roleConst.user"
+                               ng-model="roleInfo.workspace" class="md-block" layout-gt-xs="row">
+                        新建工作空间
+                    </md-switch>
+
+                    <virtual-select-multiple
+                            name="workspaceIds{{$index}}"
+                            value="id"
+                            label="name"
+                            items="workspaces"
+                            placeholder="添加工作空间"
+                            results="roleInfo.workspaceIds"
+                            required="true"
+                            ng-if="roleInfo.roleType===roleConst.user && !roleInfo.workspace"
+                    ></virtual-select-multiple>
+
+                    <virtual-select
+                            name="organizationIds{{$index}}"
+                            value="id"
+                            label="name"
+                            items="orgs"
+                            placeholder="选择组织"
+                            result="roleInfo.selectOrganizationId"
+                            required="true"
+                            ng-if="roleInfo.roleType=== roleConst.user && roleInfo.workspace"
+                    ></virtual-select>
+
+                    <virtual-select-multiple
+                            name="organizationIds{{$index}}"
+                            value="id"
+                            label="name"
+                            items="orgs"
+                            placeholder="添加组织"
+                            results="roleInfo.organizationIds"
+                            required="true"
+                            ng-if="roleInfo.roleType===roleConst.orgAdmin"
+                    ></virtual-select-multiple>
+                </div>
+                <md-button layout="row" layout-align="center" class="md-raised md-success"
+                           ng-disabled="addUserForm.$invalid || !isAddLineAble"
+                           style="width: 95%;" ng-click="addLine(roleInfoList)">
+                    添加角色
+                </md-button>
+            </form>
+        </wizard-step>
+    </div>
+</div>

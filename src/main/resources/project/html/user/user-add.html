@@ -1,0 +1,167 @@
+<div ng-cloak>
+    <md-toolbar class="content-toolbar">
+        <div class="md-toolbar-tools">
+            <div>新建用户</div>
+        </div>
+    </md-toolbar>
+    <form name="addUserForm" class="md-padding">
+        <input type="password" autocomplete="new-password" hidden>
+        <md-input-container class="md-block">
+            <label>ID</label>
+            <input autocomplete="new-password" minlength="2" md-maxlength="30" required name="id" ng-model="item.id"
+                   ng-pattern="/^[a-zA-Z][a-zA-Z0-9_@.-]*$/"/>
+            <div ng-messages="addUserForm.id.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="md-maxlength">不要超过30个字符</div>
+                <div ng-message="minlength">最少2个字符</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                    ID以字母开头，包含[a-zA-Z0-9_@.-]
+                </div>
+            </div>
+            <div class="hint">登录标识</div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>姓名</label>
+            <input autocomplete="new-password" minlength="2" md-maxlength="30" required name="name"
+                   ng-model="item.name"/>
+            <div ng-messages="addUserForm.name.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="md-maxlength">不要超过30个字符</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                    2-30字符以内
+                </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <input autocomplete="new-password" required type="email" name="email" ng-model="item.email"
+                   minlength="5" maxlength="50" md-maxlength="50" ng-pattern="/^.+@.+\..+$/"/>
+
+            <div ng-messages="addUserForm.email.$error" role="alert">
+                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                    邮件必须符合邮件格式，并且在5-50字符以内
+                </div>
+            </div>
+            <div class="hint">登录标识</div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>密码</label>
+            <i id="eye" class="fa fa-eye f2c-eye" aria-hidden="true" ng-click="view('password','eye')"></i>
+            <input autocomplete="new-password" id="password" minlength="6" md-maxlength="30" maxlength="30"
+                   type="password"
+                   required
+                   ng-click="changeType('password')"
+                   name="password"
+                   ng-model="item.password"
+            />
+
+            <div ng-messages="addUserForm.password.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                    密码必须在6-30字符以内
+                </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>确认密码</label>
+            <i id="eye1" class="fa fa-eye f2c-eye" aria-hidden="true" ng-click="view('rePassword','eye1')"></i>
+            <input autocomplete="new-password" id="rePassword" md-maxlength="30" type="password" required
+                   name="rePassword"
+                   ng-model="item.rePassword"
+                   ng-click="changeType('rePassword')"
+                   password-check="item.password">
+            <div ng-messages="addUserForm.rePassword.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="passwordCheck">密码不一致.</div>
+                <div ng-message="md-maxlength">不要超过30个字符</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>手机号码</label>
+            <input autocomplete="new-password" name="phone" ng-model="item.phone" ng-pattern="/^(1[0-9][0-9])\d{8}$/"/>
+            <div ng-messages="addUserForm.phone.$error">
+                <div ng-message="pattern">请填写正确的手机号码.</div>
+            </div>
+        </md-input-container>
+        <div ng-repeat="roleInfo in item.roleInfoList track by $index" style="margin-bottom: 60px">
+            <md-input-container class="md-block" flex-gt-xs="row">
+                <label>用户类型</label>
+                <md-select name="adminRoleId" ng-model="roleInfo.roleId" required
+                           ng-change="changeRole(roleInfo,roleInfo.roleId)">
+                    <md-option ng-value="role.id"
+                               ng-repeat="role in roles"
+                               ng-if="filterRole(role,roleInfo)">
+                        {{role.name}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="addUserForm.adminRoleId.$error">
+                    <div ng-message="required">必填.</div>
+                </div>
+                <md-icon style="cursor:pointer;"
+                         ng-if="item.roleInfoList.length>1"
+                         ng-click=" subtractLine(roleInfo)  ">clear
+                </md-icon>
+                <md-icon ng-if="item.roleInfoList.length <= 1">
+                </md-icon>
+            </md-input-container>
+
+
+            <md-switch class="md-primary" aria-label="enable" layout-align="left"
+                       ng-if="roleInfo.roleType===roleConst.user"
+                       ng-model="roleInfo.workspace" class="md-block" flex-gt-xs="row">
+                新建工作空间
+            </md-switch>
+
+            <virtual-select-multiple
+                    name="workspaceIds{{$index}}"
+                    value="id"
+                    label="name"
+                    items="workspaces"
+                    placeholder="添加工作空间"
+                    results="roleInfo.workspaceIds"
+                    required="true"
+                    ng-if="roleInfo.roleType===roleConst.user && !roleInfo.workspace"
+            ></virtual-select-multiple>
+
+            <virtual-select
+                    name="organizationIds{{$index}}"
+                    value="id"
+                    label="name"
+                    items="orgs"
+                    placeholder="选择组织"
+                    result="roleInfo.selectOrganizationId"
+                    required="true"
+                    ng-if="roleInfo.roleType=== roleConst.user && roleInfo.workspace"
+            ></virtual-select>
+
+            <virtual-select-multiple
+                    name="organizationIds{{$index}}"
+                    value="id"
+                    label="name"
+                    items="orgs"
+                    placeholder="添加组织"
+                    results="roleInfo.organizationIds"
+                    required="true"
+                    ng-if="roleInfo.roleType===roleConst.orgAdmin"
+            ></virtual-select-multiple>
+        </div>
+        <md-button layout="row" layout-align="center" class="md-raised md-success"
+                   ng-disabled="addUserForm.$invalid || !isAddLineAble"
+                   style="width: 95%;" ng-click="addLine(roleInfoList)">
+            添加角色
+        </md-button>
+    </form>
+    <div layout="row" layout-align="start center" layout-margin>
+        <md-button class="md-raised" ng-click="closeToggleForm()">
+            取消
+        </md-button>
+        <md-button class="md-raised md-primary" ng-disabled="addUserForm.$invalid"
+                   ng-click="submit('add',item)">
+            保存
+        </md-button>
+    </div>
+</div>

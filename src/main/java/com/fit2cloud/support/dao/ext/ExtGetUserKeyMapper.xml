@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtGetUserKeyMapper">
+
+    <select id="getUserList" parameterType="String" resultMap="com.fit2cloud.commons.server.base.mapper.UserMapper.BaseResultMap">
+        select *
+        from user
+        <where>
+            id = #{name}
+            or name = #{name}
+            or email = #{name}
+        </where>
+    </select>
+
+    <select id="getUserKeyList" resultMap="com.fit2cloud.commons.server.base.mapper.UserKeyMapper.BaseResultMap">
+        select *
+        from user_key
+        <where>
+            user_id = #{id}
+        </where>
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.fit2cloud.support.dto.vo.UserKeyVo">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="access_key" jdbcType="VARCHAR" property="accessKey" />
+        <result column="secret_key" jdbcType="VARCHAR" property="secretKey" />
+        <result column="create_time" jdbcType="BIGINT" property="createTime" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+        <result column="source_id" jdbcType="VARCHAR" property="orgId" />
+    </resultMap>
+    <select id="getUserKey" parameterType="string" resultMap="BaseResultMap">
+        select
+        t.*,t1.role_id,t1.source_id
+        from user_key t left join user_role t1 on t.user_id = t1.user_id
+        left join role t2 on t1.role_id = t2.id
+        where 1=1
+        <if test="name != null">
+            and t.user_id = #{name}
+        </if>
+    </select>
+
+
+</mapper>

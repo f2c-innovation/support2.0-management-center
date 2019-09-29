@@ -1,0 +1,178 @@
+{
+  "version": "2.0",
+  "permissions": [
+    {
+      "id": "USER:READ",
+      "name": "查看用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+IMPORT",
+      "name": "导入用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+CREATE",
+      "name": "创建用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+EDIT",
+      "name": "编辑用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+DELETE",
+      "name": "删除用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+RESET_PASSWORD",
+      "name": "重置密码",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+ADD_ROLE",
+      "name": "添加角色",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "USER:READ+DISABLED",
+      "name": "禁用用户",
+      "resourceId": "USER",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "ROLE:READ",
+      "name": "查看角色",
+      "resourceId": "ROLE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ROLE:READ+CREATE",
+      "name": "创建角色",
+      "resourceId": "ROLE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ROLE:READ+EDIT",
+      "name": "编辑角色",
+      "resourceId": "ROLE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ROLE:READ+DELETE",
+      "name": "删除角色",
+      "resourceId": "ROLE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ORGANIZATION:READ",
+      "name": "查看组织",
+      "resourceId": "ORGANIZATION",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ORGANIZATION:READ+CREATE",
+      "name": "创建组织",
+      "resourceId": "ORGANIZATION",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ORGANIZATION:READ+EDIT",
+      "name": "编辑组织",
+      "resourceId": "ORGANIZATION",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ORGANIZATION:READ+DELETE",
+      "name": "删除组织",
+      "resourceId": "ORGANIZATION",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ADMIN:DASHBOARD",
+      "name": "仪盘表",
+      "resourceId": "ADMIN:DASHBOARD",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "ADMIN:SYSTEM",
+      "name": "系统管理",
+      "resourceId": "ADMIN:SYSTEM",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "USER",
+      "name": "用户"
+    },
+    {
+      "id": "ROLE",
+      "name": "角色"
+    },
+    {
+      "id": "ORGANIZATION",
+      "name": "组织"
+    },
+    {
+      "id": "ADMIN:SYSTEM",
+      "name": "ADMIN:SYSTEM"
+    },
+    {
+      "id": "ADMIN:SYSTEM",
+      "name": "ADMIN:SYSTEM"
+    }
+  ]
+}

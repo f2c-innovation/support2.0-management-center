@@ -1,0 +1,67 @@
+<div ng-cloak>
+    <md-toolbar class="content-toolbar">
+        <div class="md-toolbar-tools">
+            <div>添加角色</div>
+        </div>
+    </md-toolbar>
+    <form name="addUserForm" class="md-padding">
+        <div ng-repeat="roleInfo in item.roleInfoList" style="margin-bottom: 60px">
+            <md-input-container class="md-block" layout-gt-xs="row">
+                <label>用户类型</label>
+                <md-select name="adminRoleId" ng-model="roleInfo.roleId" required
+                           ng-change="changeRole(roleInfo,roleInfo.roleId)">
+                    <md-option ng-value="role.id"
+                               ng-repeat="role in roles"
+                               ng-if="filterRole(role,roleInfo)">
+                        {{role.name}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="addUserForm.adminRoleId.$error">
+                    <div ng-message="required">必填.</div>
+                </div>
+                <md-icon style="cursor:pointer;"
+                         ng-if="item.roleInfoList.length>1"
+                         ng-click="subtractLine(roleInfo)">clear
+                </md-icon>
+                <md-icon ng-if="item.roleInfoList.length <= 1">
+                </md-icon>
+            </md-input-container>
+            <virtual-select-multiple
+                    name="workspaceIds"
+                    value="id"
+                    label="name"
+                    items="workspaces"
+                    placeholder="添加工作空间"
+                    results="roleInfo.workspaceIds"
+                    required="true"
+                    ng-if="roleInfo.roleType===roleConst.user"
+            ></virtual-select-multiple>
+
+
+            <virtual-select-multiple
+                    name="organizationIds"
+                    value="id"
+                    label="name"
+                    items="orgs"
+                    placeholder="添加组织"
+                    results="roleInfo.organizationIds"
+                    required="true"
+                    ng-if="roleInfo.roleType===roleConst.orgAdmin"
+            ></virtual-select-multiple>
+        </div>
+        <md-button layout="row" layout-align="center" class="md-raised md-success"
+                   ng-disabled="addUserForm.$invalid || !isAddLineAble"
+                   style="width: 95%;" ng-click="addLine(roleInfoList)">
+            添加
+        </md-button>
+    </form>
+    <div layout="row" layout-align="start center" layout-margin>
+        <md-button class="md-raised" ng-click="closeToggleForm()">
+            取消
+        </md-button>
+        <md-button class="md-raised md-primary" ng-disabled="addUserForm.$invalid"
+                   ng-click="submitUserRole(item)">
+            保存
+        </md-button>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtExtraUserMapper">
+
+    <select id="paging" resultMap="com.fit2cloud.commons.server.base.mapper.ExtraUserMapper.BaseResultMap">
+        select *
+        from extra_user
+        where 1=1
+        <if test="map.id!=null">
+            and extra_user.id = #{map.id}
+        </if>
+        <if test="map.name!=null">
+            and extra_user.name like #{map.name}
+        </if>
+        <if test="map.email!=null">
+            and extra_user.email like #{map.email}
+        </if>
+        <if test="map.displayName != null">
+            and extra_user.display_name like #{map.displayName}
+        </if>
+        order by sync_time desc
+    </select>
+
+    <select id="usersLog" resultMap="com.fit2cloud.support.dao.ExtraUserLogMapper.BaseResultMap">
+        select *
+        from extra_user_log
+        where 1=1
+        <if test="map.id!=null">
+            and id = #{map.id}
+        </if>
+        <if test="map.name!=null">
+            and name like #{map.name}
+        </if>
+        <if test="map.email!=null">
+            and email like #{map.email}
+        </if>
+        <if test="map.displayName != null">
+            and user_name like #{map.displayName}
+        </if>
+        order by create_time desc
+    </select>
+</mapper>

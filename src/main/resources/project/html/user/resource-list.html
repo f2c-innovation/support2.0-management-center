@@ -1,0 +1,15 @@
+<div ng-cloak ng-controller="ResourceController">
+    <md-toolbar class="content-toolbar">
+        <div class="md-toolbar-tools" style="padding-right: 0px">
+            <div>{{showInfoName}}</div>
+            <div flex></div>
+            <md-button class="md-primary" ng-click="closeInformation()" style="height: 100%;margin: 0;padding: 0">
+                <div>关闭信息</div>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content>
+        <tree class="resource-tree" data="treeData" api="noroot" type="text"></tree>
+    </md-content>
+</div>

@@ -1,0 +1,33 @@
+<div flex ng-controller="ImportExtraUsersDataController">
+    <div>
+        <md-toolbar class="content-toolbar">
+            <div class="md-toolbar-tools" style="padding-right: 0;">
+                <div>ldap变更日志</div>
+                <div flex></div>
+                <md-button class="md-primary" ng-click="toggleForm()" style="height: 100%;padding: 0;margin: 0">
+                    <div>关闭信息</div>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <div class="md-padding" layout="column" flex="100">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>更新内容</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{$index+1}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table-pagination pagination="pagination"></table-pagination>
+        </div>
+    </div>
+</div>
