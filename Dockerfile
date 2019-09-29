@@ -4,9 +4,9 @@ MAINTAINER FIT2CLOUD <guohao.ma@fit2cloud.com>
 
 RUN mkdir -p /opt/apps
 
-ADD target/support-2.0.jar /opt/apps
+ADD target/support2.0-management-center-2.0.jar /opt/apps
 
-ENV JAVA_APP_JAR=/opt/apps/support-2.0.jar
+ENV JAVA_APP_JAR=/opt/apps/support2.0-management-center-2.0.jar
 
 ENV AB_OFF=true
 
