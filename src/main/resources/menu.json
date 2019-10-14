@@ -66,39 +66,52 @@
         },
         {
           "order": 3,
-          "title": "组织",
-          "name": "organization",
-          "url": "/organization",
-          "templateUrl": "project/html/organization/organization-list.html",
+          "title": "公司",
+          "name": "company",
+          "url": "/company",
+          "templateUrl": "project/html/company/company_list.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "ORGANIZATION:READ"
-              ]
-            }
-          ]
-        },
-        {
-          "order": 4,
-          "title": "工作空间",
-          "name": "workspace",
-          "url": "/workspace",
-          "templateUrl": "project/html/workspace/workspace-list.html",
-          "requiredPermissions": [
-            {
-              "role": "ADMIN",
-              "logical": "OR",
-              "permissions": [
-                "WORKSPACE:READ"
+                "COMPANY:READ",
+                "COMPANY:READ+CREATE",
+                "COMPANY:READ+EDIT",
+                "COMPANY:READ+DELETE"
               ]
             },
             {
               "role": "ORGADMIN",
               "logical": "OR",
               "permissions": [
-                "WORKSPACE:READ"
+                "COMPANY:READ"
+              ]
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "title": "部门",
+          "name": "department",
+          "url": "/department",
+          "templateUrl": "project/html/deptartment/deptartment_list.html",
+          "requiredPermissions": [
+            {
+              "role": "ADMIN",
+              "logical": "OR",
+              "permissions": [
+                "DEPARTMENT:READ",
+                "DEPARTMENT:READ+CREATE",
+                "DEPARTMENT:READ+EDIT",
+                "DEPARTMENT:READ+DELETE"
+              ]
+            },
+            {
+              "role": "ORGADMIN",
+              "logical": "OR",
+              "permissions": [
+                "DEPARTMENT:READ"
               ]
             }
           ]
@@ -122,7 +135,7 @@
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "ADMIN:SYSTEM"
+                "SYSTEM:OPRATE"
               ]
             }
           ]
@@ -138,7 +151,7 @@
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "ADMIN:SYSTEM"
+                "SYSTEM:OPRATE"
               ]
             }
           ]
@@ -155,7 +168,7 @@
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "ADMIN:SYSTEM"
+                "SYSTEM:OPRATE"
               ]
             }
           ]
@@ -171,7 +184,39 @@
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "ADMIN:SYSTEM"
+                "SYSTEM:OPRATE"
+              ]
+            }
+          ]
+        },
+        {
+          "order": 5,
+          "title": "流程管理",
+          "name": "process_management",
+          "url": "/process_management",
+          "templateUrl": "web-public/fit2cloud/html/system/process_management.html",
+          "requiredPermissions": [
+            {
+              "role": "ADMIN",
+              "logical": "OR",
+              "permissions": [
+                "SYSTEM:OPRATE"
+              ]
+            }
+          ]
+        },
+        {
+          "order": 6,
+          "title": "公告管理",
+          "name": "notice_management",
+          "url": "/notice_management",
+          "templateUrl": "web-public/fit2cloud/html/system/notice_management.html",
+          "requiredPermissions": [
+            {
+              "role": "ADMIN",
+              "logical": "OR",
+              "permissions": [
+                "SYSTEM:OPRATE"
               ]
             }
           ]

@@ -2,6 +2,14 @@
   "version": "2.0",
   "permissions": [
     {
+      "id": "ADMIN:DASHBOARD",
+      "name": "仪盘表",
+      "resourceId": "DASHBOARD",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
       "id": "USER:READ",
       "name": "查看用户",
       "resourceId": "USER",
@@ -105,55 +113,85 @@
       ]
     },
     {
-      "id": "ORGANIZATION:READ",
-      "name": "查看组织",
-      "resourceId": "ORGANIZATION",
+      "id": "COMPANY:READ",
+      "name": "查看公司",
+      "resourceId": "COMPANY",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "COMPANY:READ+CREATE",
+      "name": "创建公司",
+      "resourceId": "COMPANY",
       "parentRoles": [
         "ADMIN"
       ]
     },
     {
-      "id": "ORGANIZATION:READ+CREATE",
-      "name": "创建组织",
-      "resourceId": "ORGANIZATION",
+      "id": "COMPANY:READ+EDIT",
+      "name": "编辑公司",
+      "resourceId": "COMPANY",
       "parentRoles": [
         "ADMIN"
       ]
     },
     {
-      "id": "ORGANIZATION:READ+EDIT",
-      "name": "编辑组织",
-      "resourceId": "ORGANIZATION",
+      "id": "COMPANY:READ+DELETE",
+      "name": "删除公司",
+      "resourceId": "COMPANY",
       "parentRoles": [
         "ADMIN"
       ]
     },
     {
-      "id": "ORGANIZATION:READ+DELETE",
-      "name": "删除组织",
-      "resourceId": "ORGANIZATION",
+      "id": "DEPARTMENT:READ",
+      "name": "查看部门",
+      "resourceId": "DEPARTMENT",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "DEPARTMENT:READ+CREATE",
+      "name": "创建部门",
+      "resourceId": "DEPARTMENT",
       "parentRoles": [
         "ADMIN"
       ]
     },
     {
-      "id": "ADMIN:DASHBOARD",
-      "name": "仪盘表",
-      "resourceId": "ADMIN:DASHBOARD",
+      "id": "DEPARTMENT:READ+EDIT",
+      "name": "编辑部门",
+      "resourceId": "DEPARTMENT",
       "parentRoles": [
         "ADMIN"
       ]
     },
     {
-      "id": "ADMIN:SYSTEM",
+      "id": "DEPARTMENT:READ+DELETE",
+      "name": "删除部门",
+      "resourceId": "DEPARTMENT",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "SYSTEM:OPRATE",
       "name": "系统管理",
-      "resourceId": "ADMIN:SYSTEM",
+      "resourceId": "SYSTEM",
       "parentRoles": [
         "ADMIN"
       ]
     }
   ],
   "resources": [
+    {
+      "id": "DASHBOARD",
+      "name": "仪表盘"
+    },
     {
       "id": "USER",
       "name": "用户"
@@ -163,16 +201,16 @@
       "name": "角色"
     },
     {
-      "id": "ORGANIZATION",
-      "name": "组织"
+      "id": "COMPANY",
+      "name": "公司"
     },
     {
-      "id": "ADMIN:SYSTEM",
-      "name": "ADMIN:SYSTEM"
+      "id": "DEPARTMENT",
+      "name": "部门"
     },
     {
-      "id": "ADMIN:SYSTEM",
-      "name": "ADMIN:SYSTEM"
+      "id": "SYSTEM",
+      "name": "系统管理"
     }
   ]
 }
