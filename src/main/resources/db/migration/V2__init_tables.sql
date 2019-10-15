@@ -8,16 +8,13 @@ CREATE TABLE `user` (
   `phone` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '电话',
   `create_time` bigint(13) NOT NULL COMMENT '创建时间',
   `last_source_id` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '上一次访问资源ID',
-  `user_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `dept_short_name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_NAME` (`name`),
   KEY `IDX_EMAIL` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-INSERT INTO `user` (id,name,email,source,password,active,phone,create_time,last_source_id,user_name,dept_short_name) VALUES
-('admin','admin','admin@fit2cloud.com','local','5b2f13d1b260f80a9dae48e94d9f6486',1,'',1537330192693,'admin','BBF-463','BBF-463')
-,('xiaoqiu','xiaoqiu','xiaoqiu.cai@fit2cloud.com','local','5b2f13d1b260f80a9dae48e94d9f6486',1,'13520819652',1555671443031,'admin','Cai Xiaoqiu, BBF-463','BBF-463');
+INSERT INTO `user` (id,name,email,source,password,active,phone,create_time,last_source_id) VALUES
+('admin','admin','admin@fit2cloud.com','local','5b2f13d1b260f80a9dae48e94d9f6486',1,'',1537330192693,'admin');
 
 CREATE TABLE `user_key` (
   `id` varchar(50) NOT NULL DEFAULT '' COMMENT 'user_key ID',
@@ -43,11 +40,7 @@ CREATE TABLE `user_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO user_role (id,user_id,role_id,source_id) VALUES
-('2a6d65db-74f4-4cbf-8ff8-8ec264b98414','admin','ADMIN',NULL)
-,('6e88d03a-4234-485f-a745-de553c8bf9c1','admin','ORGADMIN','834928d5-149e-436c-907b-8fdd482347dd')
-,('65fc5723-9949-49b9-ae94-fe3a841a5bff','xiaoqiu','82642ed5-e0df-4d03-8571-3c20d011b49d','1b3c7c28-2e21-4314-b0a6-07396a876db8')
-,('a226776b-d6b6-468d-965f-e59053658866','xiaoqiu','ADMIN',NULL)
-;
+('2a6d65db-74f4-4cbf-8ff8-8ec264b98414','admin','ADMIN',NULL);
 
 
 CREATE TABLE `role` (
@@ -64,8 +57,7 @@ CREATE TABLE `role` (
 INSERT INTO `role` (id,name,description,`type`,parent_id) VALUES
 ('ADMIN','Sys Administrator','Sys Administrator','System','ADMIN')
 ,('ORGADMIN','Org Administrator','Org Administrator','System','ORGADMIN')
-,('USER','Workspace User','Workspace User','System','USER')
-;
+,('USER','Workspace User','Workspace User','System','USER');
 
 CREATE TABLE `role_permission` (
   `id` varchar(50) NOT NULL,
@@ -108,34 +100,25 @@ CREATE TABLE `system_parameter` (
   PRIMARY KEY (`param_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-CREATE TABLE `workspace` (
-  `id` varchar(50) CHARACTER SET utf8mb4 NOT NULL COMMENT '工作空间ID',
-  `organization_id` varchar(50) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织ID',
-  `name` varchar(64) CHARACTER SET utf8mb4 NOT NULL COMMENT '工作空间名称',
+CREATE TABLE `department` (
+  `id` varchar(50) CHARACTER SET utf8mb4 NOT NULL COMMENT '部门ID',
+  `company_id` varchar(50) CHARACTER SET utf8mb4 NOT NULL COMMENT '公司ID',
+  `name` varchar(64) CHARACTER SET utf8mb4 NOT NULL COMMENT '部门名称',
   `description` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '描述',
   `create_time` bigint(13) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNQ_WN` (`organization_id`,`name`),
-  KEY `IDX_ORG` (`organization_id`)
+  UNIQUE KEY `UNQ_WN` (`company_id`,`name`),
+  KEY `IDX_ORG` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-INSERT INTO workspace (id,organization_id,name,description,create_time) VALUES
-('00673775-e22e-4ecb-b7ca-a17841d1b5b6','834928d5-149e-436c-907b-8fdd482347dd','Orange-工作空间','自动创建',1560026923218)
-,('1b3c7c28-2e21-4314-b0a6-07396a876db8','834928d5-149e-436c-907b-8fdd482347dd','创新中心',NULL,1555905658243)
-;
-
-CREATE TABLE `organization` (
-  `id` varchar(50) NOT NULL COMMENT '组织 id',
-  `name` varchar(64) NOT NULL COMMENT '组织名称',
+CREATE TABLE `company` (
+  `id` varchar(50) NOT NULL COMMENT '公司id',
+  `name` varchar(64) NOT NULL COMMENT '公司名称',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_time` bigint(13) NOT NULL COMMENT '创建时间时间戳',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_NAME` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO organization (id,name,description,create_time) VALUES
-('834928d5-149e-436c-907b-8fdd482347dd','创新开源',NULL,1555671277107)
-;
 
 CREATE TABLE `flow_task` (
   `task_id` varchar(36) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '任务ID',

@@ -1,0 +1,76 @@
+<div layout-fill class="content-backdrop" ng-controller="companyController" ng-cloak>
+    <div cg-busy="{promise:loadingLayer,minDuration:500}" layout="column" layout-fill>
+        <md-toolbar class="content-toolbar">
+            <div class="md-toolbar-tools">
+                <div>公司列表</div>
+                <md-button class="md-primary" ng-click="create()" has-permission="COMPANY:READ+CREATE">
+                    <md-icon>add_circle_outline</md-icon>
+                    创建
+                </md-button>
+                <md-button class="md-primary" ng-click="delete()" has-permission="COMPANY:READ+DELETE">
+                    <md-icon>delete</md-icon>
+                    删除
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div layout="row" flex>
+            <div class="md-padding" layout-fill layout="column" flex="100">
+                <filter-tools conditions="conditions" results="filters" search="'true'" execute="list()">
+                    <select-columns columns="columns"></select-columns>
+                    <div class="filter-item">
+                        <md-button class="md-icon-button md-whiteframe-1dp" ng-click="list()">
+                            <md-tooltip md-delay="300">刷新</md-tooltip>
+                            <md-icon>refresh</md-icon>
+                        </md-button>
+                    </div>
+                </filter-tools>
+
+                <table dynamic-table columns="columns" execute="list({sql: sql})"
+                       ng-class="{'tr-selected':selected === item.$$hashKey}">
+                    <tbody>
+                    <tr ng-repeat="item in items">
+                        <td>
+                            <md-checkbox md-no-ink aria-label="是否启用" ng-model="item.enable"
+                                         ng-click="clickChecked(!item.enable,item,false)"
+                                         ng-disabled="item.countWorkspace>0"
+                                         class="md-primary"></md-checkbox>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td>
+                            <a href="" style="cursor:pointer" ng-if="item.countWorkspace>0" md-no-ink class="md-primary"
+                               ng-click="linkWorkspace(item)">
+                                {{item.countWorkspace}}
+                            </a>
+                            <span ng-if="item.countWorkspace===0">-</span>
+                        </td>
+                        <td>
+                            <a style="cursor:pointer" href="" ng-if="item.countOrgAdmin>0" md-no-ink class="md-primary"
+                               ng-click="linkOrgAdmin(item)">
+                                {{item.countOrgAdmin}}
+                            </a>
+                            <span ng-if="item.countOrgAdmin===0">-</span>
+                        </td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.createTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td has-permissions="COMPANY:READ+EDIT">
+                            <!--设置名成加op="'其他名称'"，默认的名称为"操作"；设置宽度加width="4 或其他整数"-->
+                            <table-menus>
+                                <md-menu-item>
+                                    <md-button has-permission="COMPANY:READ+EDIT" ng-click="edit(item)">
+                                        <md-icon class="md-18">edit</md-icon>
+                                        编辑
+                                    </md-button>
+                                </md-menu-item>
+                            </table-menus>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table-pagination pagination="pagination"></table-pagination>
+            </div>
+        </div>
+        <info-form width="50%"></info-form>
+        <side-form></side-form>
+    </div>
+</div>
+

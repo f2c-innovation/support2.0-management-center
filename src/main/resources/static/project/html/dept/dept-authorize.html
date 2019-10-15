@@ -1,0 +1,22 @@
+<div ng-cloak ng-controller="WorkspaceAuthorizeController">
+    <md-toolbar class="content-toolbar">
+        <div class="md-toolbar-tools">
+            <div>授权用户</div>
+            <div flex></div>
+            <md-button class="md-primary" ng-click="closeInformation()">
+                <div>关闭信息</div>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <table dynamic-table columns="columns">
+        <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.phone}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table-pagination pagination="pagination"></table-pagination>
+</div>

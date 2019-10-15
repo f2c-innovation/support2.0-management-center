@@ -45,9 +45,10 @@
 <script th:src="@{'web-public/external/echarts/fit2cloud-echarts-theme.js?t='+${timestamp}}"></script>
 
 <!--项目JS-->
-<script th:src="@{'project/js/app.js'}"></script>
-<script th:src="@{'project/js/user/user.js'}"></script>
-<script th:src="@{'project/js/common/service.js'}"></script>
+<script th:src="@{'project/js/app.js?t='+${timestamp}}"></script>
+<script th:src="@{'project/js/user/user.js?t='+${timestamp}}"></script>
+<script th:src="@{'project/js/common/service.js?t='+${timestamp}}"></script>
+<script th:src="@{'project/js/company/company.js?t='+${timestamp}}"></script>
 
 </body>
 </html>

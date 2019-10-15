@@ -1,0 +1,36 @@
+<div ng-cloak>
+    <md-toolbar class="content-toolbar">
+        <div class="md-toolbar-tools">
+            <div>编辑组织</div>
+        </div>
+    </md-toolbar>
+    <form name="organizationFrom" class="md-padding">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>名称</label>
+            <input minlength="2" md-maxlength="30" required name="name" ng-model="item.name">
+            <div ng-messages="organizationFrom.name.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="md-maxlength">不要超过30个字符</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                    2-30字符以内
+                </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>描述</label>
+            <input md-maxlength="50" name="description" ng-model="item.description">
+            <div ng-messages="organizationFrom.description.$error">
+                <div ng-message="md-maxlength">不要超过50个字符</div>
+            </div>
+        </md-input-container>
+    </form>
+    <div layout="row" layout-align="start center" layout-margin>
+        <md-button class="md-raised" ng-click="closeToggleForm();">
+            取消
+        </md-button>
+        <md-button class="md-raised md-primary" ng-disabled="organizationFrom.$invalid" ng-click="submit('edit',item)">
+            保存
+        </md-button>
+    </div>
+</div>
