@@ -1,7 +1,7 @@
 package com.fit2cloud.support.dao.ext;
 
+import com.fit2cloud.commons.server.base.domain.Department;
 import com.fit2cloud.commons.server.base.domain.User;
-import com.fit2cloud.commons.server.base.domain.Workspace;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.support.dto.RoleInfo;
 import com.fit2cloud.support.dto.UserKeysDTO;
@@ -26,7 +26,7 @@ public interface ExtUserMapper {
 
     List<RoleInfo> roleInfo(Map<String, Object> param);
 
-    List<Workspace> resourcePaging(@Param("resourceType") String resourceType, @Param("userId") String userId, @Param("roleId") String roleId);
+    List<Department> resourcePaging(@Param("resourceType") String resourceType, @Param("userId") String userId, @Param("roleId") String roleId);
 
     Set<String> getIds();
 

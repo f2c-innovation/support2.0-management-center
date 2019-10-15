@@ -1,14 +1,14 @@
 package com.fit2cloud.support.dto;
 
-import com.fit2cloud.commons.server.base.domain.Workspace;
+import com.fit2cloud.commons.server.base.domain.Department;
 import io.swagger.annotations.ApiModelProperty;
 
-public class WorkspaceDTO extends Workspace {
+public class DepartmentDTO extends Department {
 
     @ApiModelProperty("授权用户数量")
     private long countAuthorizedUser;
-    @ApiModelProperty("组织名称")
-    private String organizationName;
+    @ApiModelProperty("公司名称")
+    private String companyName;
 
     public long getCountAuthorizedUser() {
         return countAuthorizedUser;
@@ -18,11 +18,11 @@ public class WorkspaceDTO extends Workspace {
         this.countAuthorizedUser = countAuthorizedUser;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

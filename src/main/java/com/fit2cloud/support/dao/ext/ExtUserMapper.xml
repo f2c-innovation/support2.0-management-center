@@ -15,11 +15,11 @@
 
     <resultMap id="RoleInfoMap" type="com.fit2cloud.support.dto.RoleInfo">
         <result column="roleId" jdbcType="VARCHAR" property="roleId"/>
-        <collection property="organizationIds" ofType="java.lang.String" javaType="java.util.List">
-            <result column="organizationId"/>
+        <collection property="companyIds" ofType="java.lang.String" javaType="java.util.List">
+            <result column="companyId"/>
         </collection>
-        <collection property="workspaceIds" ofType="java.lang.String" javaType="java.util.List">
-            <result column="workspaceId"/>
+        <collection property="deptIds" ofType="java.lang.String" javaType="java.util.List">
+            <result column="deptId"/>
         </collection>
     </resultMap>
 
@@ -76,7 +76,7 @@
         IF(role.type = 'System', IF(role.id = 'ORGADMIN', user_role.source_id, null),
         IF(role.parent_id = 'ORGADMIN', user_role.source_id, null)) as organizationId,
         IF(role.type = 'System', IF(role.id = 'USER', user_role.source_id, null),
-        IF(role.parent_id = 'USER', user_role.source_id, null)) as workspaceId
+        IF(role.parent_id = 'USER', user_role.source_id, null)) as deptId
         from user_role
         join role
         where user_role.role_id = role.id
@@ -88,30 +88,30 @@
             </foreach>
         </if>
     </select>
-    <select id="resourcePaging" resultType="com.fit2cloud.commons.server.base.domain.Workspace">
+    <select id="resourcePaging" resultType="com.fit2cloud.commons.server.base.domain.Department">
         select
-        <if test="resourceType =='workspace'">
-            workspace.name as name,
-            workspace.create_time as createTime
+        <if test="resourceType =='department'">
+            department.name as name,
+            department.create_time as createTime
         </if>
-        <if test="resourceType =='organization'">
-            organization.name as name,
-            organization.create_time as createTime
+        <if test="resourceType =='company'">
+            company.name as name,
+            company.create_time as createTime
         </if>
         from user_role
-        <if test="resourceType =='workspace'">
-            join workspace
+        <if test="resourceType =='department'">
+            join department
         </if>
-        <if test="resourceType =='organization'">
-            join organization
+        <if test="resourceType =='company'">
+            join company
         </if>
         where user_role.user_id = #{userId}
         and user_role.role_id = #{roleId}
-        <if test="resourceType =='workspace'">
-            and workspace.id = user_role.source_id
+        <if test="resourceType =='department'">
+            and department.id = user_role.source_id
         </if>
-        <if test="resourceType =='organization'">
-            and organization.id = user_role.source_id
+        <if test="resourceType =='company'">
+            and company.id = user_role.source_id
         </if>
     </select>
     <select id="getIds" resultType="java.lang.String">

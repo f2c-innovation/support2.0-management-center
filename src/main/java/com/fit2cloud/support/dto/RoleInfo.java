@@ -13,39 +13,48 @@ import java.util.List;
  **/
 public class RoleInfo implements Serializable {
 
-    @ApiModelProperty("是否创建新的工作空间")
-    private boolean workspace;//前缀不能is、create!
-    @ApiModelProperty("组织 ID 集合")
-    private List<String> organizationIds;
-    @ApiModelProperty("普通用户选择工作空间为哪一个组织")
-    private String selectOrganizationId;//普通用户选择工作空间为哪一个组织
-    @ApiModelProperty("工作空间 ID 集合")
-    private List<String> workspaceIds;
+    @ApiModelProperty("是否创建新的部门")
+    private boolean department;//前缀不能is、create!
+    @ApiModelProperty("公司 ID 集合")
+    private List<String> companyIds;
+    @ApiModelProperty("普通用户选择部门为哪一公司")
+    private String selectCompanyId;//普通用户选择工作空间为哪一个组织
+    @ApiModelProperty("部门 ID 集合")
+    private List<String> deptIds;
     @ApiModelProperty("角色ID")
     private String roleId;
 
-    public boolean getWorkspace() {
-        return workspace;
+
+    public boolean getDepartment() {
+        return department;
     }
 
-    public void setWorkspace(boolean workspace) {
-        this.workspace = workspace;
+    public void setDepartment(boolean department) {
+        this.department = department;
     }
 
-    public List<String> getOrganizationIds() {
-        return organizationIds;
+    public List<String> getCompanyIds() {
+        return companyIds;
     }
 
-    public void setOrganizationIds(List<String> organizationIds) {
-        this.organizationIds = organizationIds;
+    public void setCompanyIds(List<String> companyIds) {
+        this.companyIds = companyIds;
     }
 
-    public List<String> getWorkspaceIds() {
-        return workspaceIds;
+    public String getSelectCompanyId() {
+        return selectCompanyId;
     }
 
-    public void setWorkspaceIds(List<String> workspaceIds) {
-        this.workspaceIds = workspaceIds;
+    public void setSelectCompanyId(String selectCompanyId) {
+        this.selectCompanyId = selectCompanyId;
+    }
+
+    public List<String> getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(List<String> deptIds) {
+        this.deptIds = deptIds;
     }
 
     public String getRoleId() {
@@ -56,11 +65,4 @@ public class RoleInfo implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getSelectOrganizationId() {
-        return selectOrganizationId;
-    }
-
-    public void setSelectOrganizationId(String selectOrganizationId) {
-        this.selectOrganizationId = selectOrganizationId;
-    }
 }

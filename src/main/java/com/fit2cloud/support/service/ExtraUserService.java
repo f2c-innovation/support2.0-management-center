@@ -70,7 +70,7 @@ public class ExtraUserService {
     @Resource
     private ExtraDataLogMapper extraDataLogMapper;
     @Resource
-    private WorkspaceMapper workspaceMapper;
+    private DepartmentMapper departmentMapper;
     @Resource
     private UserMapper userMapper;
     @Resource
@@ -255,12 +255,12 @@ public class ExtraUserService {
                 userVo.setNewGroup(false);
                 userVo.setId(extraUser.getName());
 
-                List<Workspace> workspaceList = workspaceMapper.selectByExample(null);
+                List<Department> departments = departmentMapper.selectByExample(null);
 
                 boolean flag = false;
-                for (Workspace workspace : workspaceList) {
-                    userVo.setOrgId(workspace.getId());
-                    userVo.setOrgName(workspace.getName());
+                for (Department department : departments) {
+                    userVo.setOrgId(department.getId());
+                    userVo.setOrgName(department.getName());
                     flag = true;
                     break;
                 }

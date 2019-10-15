@@ -6,8 +6,8 @@ import com.fit2cloud.commons.server.constants.RoleConstants;
 import com.fit2cloud.commons.server.model.ExcelExportRequest;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.service.UserKeysService;
+import com.fit2cloud.commons.server.utils.DepartmentUtils;
 import com.fit2cloud.commons.server.utils.SessionUtils;
-import com.fit2cloud.commons.server.utils.WorkspaceUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.PageUtils;
 import com.fit2cloud.commons.utils.Pager;
@@ -53,9 +53,9 @@ public class UserController {
     public Pager<List<UserDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody UserRequest request) {
         Map<String, Object> map = BeanUtils.objectToMap(request);
         String parentRoleId = SessionUtils.getUser().getParentRoleId();
-        if (StringUtils.equals(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
-            List<String> resourceIds = WorkspaceUtils.getWorkspaceIdsByOrgIds(SessionUtils.getOrganizationId());
-            resourceIds.add(SessionUtils.getOrganizationId());
+        if (StringUtils.equals(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
+            List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
+            resourceIds.add(SessionUtils.getCompanyId());
             map.put("resourceIds", resourceIds);
             Page page = PageHelper.startPage(goPage, pageSize, true);
             return PageUtils.setPageInfo(page, userService.paging(map));
@@ -76,18 +76,18 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @ApiOperation(value = "创建组织管理员")
-    @PostMapping(value = "/add/organization")
+    @ApiOperation(value = "创建公司管理员")
+    @PostMapping(value = "/add/company")
     @RequiresPermissions(PermissionConstants.USER_CREATE)
-    public UserDTO createOrganizationUser(@RequestBody CreateOrganizationUserRequest request) {
-        return userService.createOrganizationUser(request);
+    public UserDTO createOrganizationUser(@RequestBody CreateCompanyUserRequest request) {
+        return userService.createCompanyUser(request);
     }
 
-    @ApiOperation(value = "创建工作空间用户")
-    @PostMapping(value = "/add/workspace")
+    @ApiOperation(value = "创建部门用户")
+    @PostMapping(value = "/add/department")
     @RequiresPermissions(PermissionConstants.USER_CREATE)
-    public UserDTO createWorkspaceUser(@RequestBody CreateWorkspaceUserRequest request) {
-        return userService.CreateWorkspaceUser(request);
+    public UserDTO createWorkspaceUser(@RequestBody CreateDepartmentUserRequest request) {
+        return userService.CreateDepartmentUser(request);
     }
 
     @ApiOperation(value = "创建用户")
@@ -181,8 +181,8 @@ public class UserController {
     public ResponseEntity<byte[]> export(@RequestBody ExcelExportRequest request) throws Exception {
         byte[] bytes = null;
         String parentRoleId = SessionUtils.getUser().getParentRoleId();
-        if (StringUtils.equals(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
-            List<String> resourceIds = WorkspaceUtils.getWorkspaceIdsByOrgIds(SessionUtils.getOrganizationId());
+        if (StringUtils.equals(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
+            List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
             request.getParams().put("resourceIds", resourceIds);
             bytes = userService.exportUsers(request);
         }

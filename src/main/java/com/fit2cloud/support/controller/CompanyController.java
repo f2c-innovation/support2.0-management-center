@@ -1,13 +1,19 @@
 package com.fit2cloud.support.controller;
 
-import com.fit2cloud.commons.server.base.domain.Organization;
-import com.fit2cloud.commons.server.base.domain.Workspace;
+import com.fit2cloud.commons.server.base.domain.Company;
+import com.fit2cloud.commons.server.base.domain.Department;
 import com.fit2cloud.commons.server.model.SessionUser;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.utils.SessionUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.PageUtils;
 import com.fit2cloud.commons.utils.Pager;
+import com.fit2cloud.support.common.constants.PermissionConstants;
+import com.fit2cloud.support.dto.CompanyDTO;
+import com.fit2cloud.support.dto.request.CompanyRequest;
+import com.fit2cloud.support.dto.request.CreateCompanyRequest;
+import com.fit2cloud.support.dto.request.UpdateCompanyRequest;
+import com.fit2cloud.support.service.CompanyService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
@@ -24,67 +30,66 @@ import java.util.List;
 @Api(tags = "公司")
 public class CompanyController {
 
-//    @Resource
-//    private OrganizationService organizationService;
-//
-//
-//    @RequiresPermissions(value = {PermissionConstants.USER_READ,
-//            PermissionConstants.WORKSPACE_EDIT,
-//            PermissionConstants.WORKSPACE_CREATE,}, logical = Logical.OR)
-//    @RequestMapping(method = RequestMethod.GET)
-//    public Object organizations() {
-//        SessionUser sessionUser = SessionUtils.getUser();
-//        return organizationService.organizations(sessionUser);
-//    }
-//
-//    @GetMapping("/currentOrganization")
-//    public Object currentOrganization() {
-//        SessionUser sessionUser = SessionUtils.getUser();
-//        return organizationService.currentOrganization(sessionUser.getOrganizationId());
-//    }
-//
-//    @ApiOperation(value = "组织列表")
-//    @PostMapping(value = "/{goPage}/{pageSize}")
-//    @RequiresPermissions(PermissionConstants.ORGANIZATION_READ)
-//    public Pager<List<OrganizationDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody OrganizationRequest request) {
-//        Page page = PageHelper.startPage(goPage, pageSize, true);
-//        return PageUtils.setPageInfo(page, organizationService.paging(BeanUtils.objectToMap(request)));
-//    }
-//
-//    @RequiresPermissions(PermissionConstants.ROLE_READ)
-//    @PostMapping(value = "link/workspace/{organizationId}/{goPage}/{pageSize}")
-//    public Pager<List<Workspace>> linkWorkspacePaging(@PathVariable String organizationId, @PathVariable int goPage, @PathVariable int pageSize) {
-//        Page page = PageHelper.startPage(goPage, pageSize, true);
-//        return PageUtils.setPageInfo(page, organizationService.linkWorkspacePaging(organizationId));
-//    }
-//
-//    @ApiOperation(value = "获取组织管理员")
-//    @RequiresPermissions(PermissionConstants.ROLE_READ)
-//    @PostMapping(value = "user/{organizationId}/{goPage}/{pageSize}")
-//    public Pager<List<UserDTO>> linkOrgAdminPaging(@PathVariable String organizationId, @PathVariable int goPage, @PathVariable int pageSize) {
-//        Page page = PageHelper.startPage(goPage, pageSize, true);
-//        return PageUtils.setPageInfo(page, organizationService.linkOrgAdminPaging(organizationId));
-//    }
-//
-//    @ApiOperation(value = "批量删除组织")
-//    @PostMapping(value = "/delete")
-//    @RequiresPermissions(PermissionConstants.ORGANIZATION_DELETE)
-//    public void delete(@RequestBody List<String> organizationIds) {
-//        organizationService.delete(organizationIds);
-//    }
-//
-//    @ApiOperation(value = "创建组织")
-//    @PostMapping("/add")
-//    @RequiresPermissions(PermissionConstants.ORGANIZATION_CREATE)
-//    public Organization insert(@RequestBody CreateOrganizationRequest request) {
-//        return organizationService.insert(request);
-//    }
-//
-//    @ApiOperation(value = "编辑组织")
-//    @PostMapping("/update")
-//    @RequiresPermissions(PermissionConstants.ORGANIZATION_EDIT)
-//    public Organization update(@RequestBody UpdateOrganizationRequest request) {
-//        return organizationService.update(request);
-//    }
+    @Resource
+    private CompanyService companyService;
+
+    @RequiresPermissions(value = {PermissionConstants.USER_READ,
+            PermissionConstants.DEPARTMENT_EDIT,
+            PermissionConstants.DEPARTMENT_CREATE,}, logical = Logical.OR)
+    @RequestMapping(method = RequestMethod.GET)
+    public Object organizations() {
+        SessionUser sessionUser = SessionUtils.getUser();
+        return companyService.companies(sessionUser);
+    }
+
+    @GetMapping("/currentOrganization")
+    public Object currentOrganization() {
+        SessionUser sessionUser = SessionUtils.getUser();
+        return companyService.currentCompany(sessionUser.getCompanyId());
+    }
+
+    @ApiOperation(value = "组织列表")
+    @PostMapping(value = "/{goPage}/{pageSize}")
+    @RequiresPermissions(PermissionConstants.COMPANY_READ)
+    public Pager<List<CompanyDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody CompanyRequest request) {
+        Page page = PageHelper.startPage(goPage, pageSize, true);
+        return PageUtils.setPageInfo(page, companyService.paging(BeanUtils.objectToMap(request)));
+    }
+
+    @RequiresPermissions(PermissionConstants.ROLE_READ)
+    @PostMapping(value = "link/department/{companyId}/{goPage}/{pageSize}")
+    public Pager<List<Department>> linkDepartmentPaging(@PathVariable String companyId, @PathVariable int goPage, @PathVariable int pageSize) {
+        Page page = PageHelper.startPage(goPage, pageSize, true);
+        return PageUtils.setPageInfo(page, companyService.linkDepartmentPaging(companyId));
+    }
+
+    @ApiOperation(value = "获取公司管理员")
+    @RequiresPermissions(PermissionConstants.ROLE_READ)
+    @PostMapping(value = "user/{companyId}/{goPage}/{pageSize}")
+    public Pager<List<UserDTO>> linkCompanyAdminPaging(@PathVariable String companyId, @PathVariable int goPage, @PathVariable int pageSize) {
+        Page page = PageHelper.startPage(goPage, pageSize, true);
+        return PageUtils.setPageInfo(page, companyService.linkCompanyAdminPaging(companyId));
+    }
+
+    @ApiOperation(value = "批量删除公司")
+    @PostMapping(value = "/delete")
+    @RequiresPermissions(PermissionConstants.COMPANY_DELETE)
+    public void delete(@RequestBody List<String> companyIds) {
+        companyService.delete(companyIds);
+    }
+
+    @ApiOperation(value = "创建公司")
+    @PostMapping("/add")
+    @RequiresPermissions(PermissionConstants.COMPANY_CREATE)
+    public Company insert(@RequestBody CreateCompanyRequest request) {
+        return companyService.insert(request);
+    }
+
+    @ApiOperation(value = "编辑公司")
+    @PostMapping("/update")
+    @RequiresPermissions(PermissionConstants.COMPANY_EDIT)
+    public Company update(@RequestBody UpdateCompanyRequest request) {
+        return companyService.update(request);
+    }
 
 }

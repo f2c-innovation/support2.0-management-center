@@ -2,23 +2,23 @@ package com.fit2cloud.support.dto.request;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class CreateWorkspaceRequest {
+public class CreateDepartmentRequest {
 
-    @ApiModelProperty(value = "组织ID,组织管理员默认当前组织(可不填)", required = true)
-    private String organizationId;
+    @ApiModelProperty(value = "公司ID,公司管理员默认当前组织(可不填)", required = true)
+    private String companyId;
 
-    @ApiModelProperty(value = "工作空间名称", required = true)
+    @ApiModelProperty(value = "部门名称", required = true)
     private String name;
 
     @ApiModelProperty("描述")
     private String description;
 
-    public String getOrganizationId() {
-        return organizationId;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setOrganizationId(String organizationId) {
-        this.organizationId = organizationId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getName() {

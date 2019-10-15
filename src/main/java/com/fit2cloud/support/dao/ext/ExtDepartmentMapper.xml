@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fit2cloud.support.dao.ext.ExtWorkspaceMapper">
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtDepartmentMapper">
 
-    <resultMap id="WorkspaceDtoMap" type="com.fit2cloud.support.dto.WorkspaceDTO"
-               extends="com.fit2cloud.commons.server.base.mapper.WorkspaceMapper.BaseResultMap">
-        <result column="organizationName" jdbcType="VARCHAR" property="organizationName"/>
+    <resultMap id="DepartmentDtoMap" type="com.fit2cloud.support.dto.DepartmentDTO"
+               extends="com.fit2cloud.commons.server.base.mapper.DepartmentMapper.BaseResultMap">
+        <result column="companyName" jdbcType="VARCHAR" property="companyName"/>
         <result column="countAuthorizedUser" jdbcType="BIGINT" property="countAuthorizedUser"/>
     </resultMap>
 
-    <resultMap id="WorkspaceTreeNode" type="com.fit2cloud.commons.server.model.TreeNode">
-        <result property="id" column="organization_id"/>
-        <result property="name" column="organization_name"/>
+    <resultMap id="DepartmentTreeNode" type="com.fit2cloud.commons.server.model.TreeNode">
+        <result property="id" column="company_id"/>
+        <result property="name" column="company_name"/>
         <collection property="children" column="children" ofType="com.fit2cloud.commons.server.model.TreeNode">
             <result property="id" column="id"/>
             <result property="name" column="name"/>
         </collection>
     </resultMap>
 
-    <select id="paging" resultMap="WorkspaceDtoMap">
+    <select id="paging" resultMap="DepartmentDtoMap">
         select
-        workspace.*,
-        organization.name as organizationName,
+        department.*,
+        company.name as companyName,
         (select count(user_role.id)
         from user_role
-        where user_role.source_id = workspace.id) as countAuthorizedUser
-        from workspace
-        join organization
-        where workspace.organization_id = organization.id
+        where user_role.source_id = department.id) as countAuthorizedUser
+        from department
+        join company
+        where department.organization_id = company.id
         <if test="map.id!=null">
-            and workspace.id = #{map.id}
+            and department.id = #{map.id}
         </if>
         <if test="map.name!=null">
-            and workspace.name like #{map.name}
+            and department.name like #{map.name}
         </if>
-        <if test="map.organizationId!=null">
-            and workspace.organization_id = #{map.organizationId}
+        <if test="map.companyId!=null">
+            and department.company_id = #{map.companyId}
         </if>
         <if test="map.role!=null">
-            and workspace.id in
+            and department.id in
             <foreach collection="map.resourceIds" item="resourceId" index="index" open="(" close=")" separator=",">
                 #{resourceId}
             </foreach>
@@ -49,12 +49,12 @@
             order by ${map.sort}
         </if>
     </select>
-    <select id="linkWorkspacePaging" resultMap="com.fit2cloud.commons.server.base.mapper.WorkspaceMapper.BaseResultMap">
+    <select id="linkDepartmentPaging" resultMap="com.fit2cloud.commons.server.base.mapper.DepartmentMapper.BaseResultMap">
         select *
-        from workspace
-        where organization_id = #{organizationId}
+        from department
+        where companyId_id = #{companyId}
     </select>
-    <select id="linkOrgAdminPaging" resultMap="com.fit2cloud.support.dao.ext.ExtUserMapper.userDtoMap">
+    <select id="linkCompanyAdminPaging" resultMap="com.fit2cloud.support.dao.ext.ExtUserMapper.userDtoMap">
         select user.*
         from user
                  join user_role
@@ -66,16 +66,16 @@
         from user
                  join user_role
         where user.id = user_role.user_id
-          and user_role.source_id = #{workspaceId}
+          and user_role.source_id = #{deptId}
     </select>
 
-    <select id="selectWorkspaceTreeNode" resultMap="WorkspaceTreeNode">
+    <select id="selectDepartmentTreeNode" resultMap="DepartmentTreeNode">
         SELECT
-        organization.name AS organization_name,
-        workspace.*
-        FROM workspace
-        JOIN organization ON organization_id = organization.id
-        JOIN user_role ON source_id = organization_id
+        company.name AS company_name,
+        department.*
+        FROM department
+        JOIN company ON company_id = company.id
+        JOIN user_role ON source_id = company_id
         <where>
             <if test="userId != null">
                 and user_id = #{userId}
@@ -83,8 +83,8 @@
             <if test="roleId != null">
                 and role_id = #{roleId}
             </if>
-            <if test="organizationId != null">
-                and organization_id = #{organizationId}
+            <if test="companyId != null">
+                and company_id = #{companyId}
             </if>
         </where>
     </select>

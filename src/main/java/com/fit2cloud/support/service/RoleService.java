@@ -130,9 +130,9 @@ public class RoleService extends RoleCommonService {
 
     public List<Role> roles(String parentRoleId) {
         RoleExample example = new RoleExample();
-        if (StringUtils.endsWithIgnoreCase(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
+        if (StringUtils.endsWithIgnoreCase(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
             example.createCriteria().andParentIdEqualTo(RoleConstants.Id.USER.name());
-            example.or().andParentIdEqualTo(RoleConstants.Id.ORGADMIN.name());
+            example.or().andParentIdEqualTo(RoleConstants.Id.CompanyADMIN.name());
         }
         example.setOrderByClause("type desc,parent_id");
         return roleMapper.selectByExample(example);
@@ -194,7 +194,7 @@ public class RoleService extends RoleCommonService {
 
     private boolean isSystemRole(String roleId) {
         return RoleConstants.Id.ADMIN.name().equals(roleId)
-                || RoleConstants.Id.ORGADMIN.name().equals(roleId)
+                || RoleConstants.Id.CompanyADMIN.name().equals(roleId)
                 || RoleConstants.Id.USER.name().equals(roleId);
     }
 

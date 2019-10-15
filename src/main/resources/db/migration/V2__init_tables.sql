@@ -39,8 +39,7 @@ CREATE TABLE `user_role` (
   KEY `IDX_ROLE_ID` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO user_role (id,user_id,role_id,source_id) VALUES
-('2a6d65db-74f4-4cbf-8ff8-8ec264b98414','admin','ADMIN',NULL);
+insert into `user_role` ( `id`, `user_id`, `role_id`, `source_id`) values ( 'daa19706-d730-4e6d-854f-a828c50d6637', 'admin', 'ADMIN', null);
 
 
 CREATE TABLE `role` (
@@ -133,7 +132,7 @@ CREATE TABLE `flow_task` (
   `task_form_url` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '任务页面地址',
   `task_activity` varchar(36) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '环节ID',
   `process_id` varchar(36) CHARACTER SET utf8mb4 NOT NULL COMMENT '流程ID',
-  `workspace_id` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '工作空间ID',
+  `dept_id` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '部门ID',
   `business_type` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '关联业务类型',
   `business_key` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '关联业务ID',
   `module` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '模块',
@@ -143,7 +142,7 @@ CREATE TABLE `flow_task` (
   KEY `IDX_PROCESS_ID` (`process_id`) USING BTREE,
   KEY `IDX_BUSINESS_KEY` (`business_key`) USING BTREE,
   KEY `IDX_MODULE` (`module`) USING BTREE,
-  KEY `IDX_WORKSPACE_ID` (`workspace_id`) USING BTREE
+  KEY `IDX_DEPT_ID` (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `flow_process` (
@@ -156,13 +155,13 @@ CREATE TABLE `flow_process` (
   `deploy_id` varchar(36) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '部署ID',
   `business_key` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '关联业务ID',
   `business_type` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '关联业务类型',
-  `workspace_id` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '工作空间ID',
+  `dept_id` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '部门ID',
   `module` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '模块ID',
   PRIMARY KEY (`process_id`),
   KEY `IDX_DEPLOY_ID` (`deploy_id`) USING BTREE,
   KEY `IDX_BUSINESS_KEY` (`business_key`) USING BTREE,
   KEY `IDX_MODULE` (`module`) USING BTREE,
-  KEY `IDX_WORKSPACE_ID` (`workspace_id`) USING BTREE
+  KEY `IDX_DEPT_ID` (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `menu_preference` (
