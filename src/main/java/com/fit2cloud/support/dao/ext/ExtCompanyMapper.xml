@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtCompanyMapper">
+
+    <resultMap id="CompanyDtoMap" type="com.fit2cloud.support.dto.CompanyDTO"
+               extends="com.fit2cloud.commons.server.base.mapper.CompanyMapper.BaseResultMap">
+        <result column="countCompanyAdmin" jdbcType="BIGINT" property="countCompanyAdmin"/>
+        <result column="countDept" jdbcType="BIGINT" property="countDept"/>
+    </resultMap>
+
+    <select id="paging" resultMap="CompanyDtoMap">
+        select
+            company.*,
+            (select count(user_role.id)
+             from user_role
+             where company.id = user_role.source_id)       as countCompanyAdmin,
+            (select count(department.id)
+             from department
+             where department.company_id = company.id) as countDept
+        from company
+        <where>
+            <if test="map.id!=null">
+                and company.id = #{map.id}
+            </if>
+            <if test="map.name!=null">
+                and company.name like #{map.name}
+            </if>
+            <if test="map.sort!=null">
+                order by ${map.sort}
+            </if>
+        </where>
+    </select>
+</mapper>
