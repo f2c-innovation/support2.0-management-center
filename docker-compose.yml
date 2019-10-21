@@ -5,7 +5,7 @@ services:
     image: registry.fit2cloud.com/innovation/support2.0-management-center:master
     container_name: support2.0-management-center
     ports:
-      - 8088:8088
+      - 6602:6602
     volumes:
       - host-opt-fit2cloud-conf:/opt/fit2cloud/conf
       - host-opt-fit2cloud-logs:/opt/fit2cloud/logs
@@ -17,7 +17,7 @@ services:
     image: registry.fit2cloud.com/innovation/support2.0-gateway:master
     container_name: support2.0-gateway
     ports:
-      - 6601:6601
+      - 8088:6601
     volumes:
       - host-opt-fit2cloud-conf:/opt/fit2cloud/conf
       - host-opt-fit2cloud-logs:/opt/fit2cloud/logs
