@@ -12,7 +12,7 @@ ENV AB_OFF=true
 
 ENV JAVA_OPTIONS=-Dfile.encoding=utf-8
 
-EXPOSE 8088
+EXPOSE 6602
 
 HEALTHCHECK --interval=15s --timeout=5s --retries=20 --start-period=30s CMD curl -f 127.0.0.1:6602
 

@@ -25,6 +25,36 @@ services:
     networks:
       - support-network
 
+  keycloak:
+    image: registry.fit2cloud.com/innovation/keycloak:4.8.3.Final
+    container_name: keycloak
+    env_file:
+      - ./conf/keycloak.properties
+    ports:
+      - 8881:8080
+    command:
+      - -b 0.0.0.0 -Dkeycloak.import=/opt/fit2cloud/conf/cmp-realm.json
+    volumes:
+      - host-opt-fit2cloud-conf:/opt/fit2cloud/conf
+      - host-opt-fit2cloud-logs:/opt/fit2cloud/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - support-network
+
+  redis:
+    image: registry.fit2cloud.com/fit2cloud2/redis:5.0.3-alpine
+    container_name: redis
+    command: ["/etc/redis.conf"]
+    ports:
+      - 6379:6379
+    volumes:
+      - /opt/fit2cloud/conf/redis.conf:/etc/redis.conf
+      - host-opt-fit2cloud-redis-data:/data
+    networks:
+      - support-network
+
   mysql:
     image: registry.fit2cloud.com/fit2cloud2/mysql:5.7.24
     container_name: mysql
