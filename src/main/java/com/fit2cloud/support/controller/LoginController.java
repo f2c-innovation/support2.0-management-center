@@ -8,6 +8,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(headers = "Accept=application/json")
 public class LoginController {
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public Object login(HttpServletResponse response, Model model) {

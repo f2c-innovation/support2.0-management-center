@@ -55,6 +55,26 @@ services:
     networks:
       - support-network
 
+  elasticsearch:
+    image: registry.fit2cloud.com/fit2cloud2/elasticsearch:6.6.0
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - /opt/fit2cloud/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /opt/fit2cloud/conf/elasticsearch-jvm.options:/usr/share/elasticsearch/config/jvm.options
+      - host-opt-fit2cloud-elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - support-network
+
   mysql:
     image: registry.fit2cloud.com/fit2cloud2/mysql:5.7.24
     container_name: mysql
