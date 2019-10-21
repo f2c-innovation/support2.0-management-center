@@ -37,18 +37,18 @@ public class CompanyController {
             PermissionConstants.DEPARTMENT_EDIT,
             PermissionConstants.DEPARTMENT_CREATE,}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.GET)
-    public Object organizations() {
+    public Object Companys() {
         SessionUser sessionUser = SessionUtils.getUser();
         return companyService.companies(sessionUser);
     }
 
-    @GetMapping("/currentOrganization")
-    public Object currentOrganization() {
+    @GetMapping("/currentCompany")
+    public Object currentCompany() {
         SessionUser sessionUser = SessionUtils.getUser();
         return companyService.currentCompany(sessionUser.getCompanyId());
     }
 
-    @ApiOperation(value = "组织列表")
+    @ApiOperation(value = "公司列表")
     @PostMapping(value = "/{goPage}/{pageSize}")
     @RequiresPermissions(PermissionConstants.COMPANY_READ)
     public Pager<List<CompanyDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody CompanyRequest request) {

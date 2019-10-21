@@ -32,25 +32,25 @@
                         <td>
                             <md-checkbox md-no-ink aria-label="是否启用" ng-model="item.enable"
                                          ng-click="clickChecked(!item.enable,item,false)"
-                                         ng-disabled="item.countWorkspace>0"
+                                         ng-disabled="item.countDept>0"
                                          class="md-primary"></md-checkbox>
                         </td>
                         <td>{{item.name}}</td>
                         <td>
-                            <a href="" style="cursor:pointer" ng-if="item.countWorkspace>0" md-no-ink class="md-primary"
-                               ng-click="linkWorkspace(item)">
-                                {{item.countWorkspace}}
+                            <a href="" style="cursor:pointer" ng-if="item.countDept>0" md-no-ink class="md-primary"
+                               ng-click="linkDept(item)">
+                                {{item.countDept}}
                             </a>
-                            <span ng-if="item.countWorkspace===0">-</span>
+                            <span ng-if="item.countDept===0">-</span>
                         </td>
                         <td>
-                            <a style="cursor:pointer" href="" ng-if="item.countOrgAdmin>0" md-no-ink class="md-primary"
-                               ng-click="linkOrgAdmin(item)">
-                                {{item.countOrgAdmin}}
+                            <a style="cursor:pointer" href="" ng-if="item.countCompanyAdmin>0" md-no-ink class="md-primary"
+                               ng-click="linkCompanyAdmin(item)">
+                                {{item.countCompanyAdmin}}
                             </a>
-                            <span ng-if="item.countOrgAdmin===0">-</span>
+                            <span ng-if="item.countCompanyAdmin===0">-</span>
                         </td>
-                        <td>{{item.description}}</td>
+                        <td>{{item.email}}</td>
                         <td>{{item.createTime | date:'yyyy-MM-dd HH:mm'}}</td>
                         <td has-permissions="COMPANY:READ+EDIT">
                             <!--设置名成加op="'其他名称'"，默认的名称为"操作"；设置宽度加width="4 或其他整数"-->

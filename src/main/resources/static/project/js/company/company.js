@@ -2,7 +2,8 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
 
     // 定义搜索条件
     $scope.conditions = [
-        {key: "name", name: "名称", directive: "filter-contains"}
+        {key: "name", name: "名称", directive: "filter-contains"},
+        {key: "email", name: "公司邮箱", directive: "filter-contains"}
     ];
 
     // 用于传入后台的参数
@@ -16,7 +17,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         checkValue: false,
         change: function (checked) {
             $scope.items.forEach(function (item) {
-                if (!item.countWorkspace > 0) {
+                if (!item.countDept > 0) {
                     item.enable = checked;
                     $scope.singleClick(checked, item, true);
                 }
@@ -48,8 +49,8 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     $scope.columns = [
         $scope.first,
         {value: "名称", key: "name", sort: false},
-        {value: "工作空间", key: "countWorkspace"},// 不想排序的列，用sort: false
-        {value: "组织管理员", key: "countOrgAdmin"},// 不想排序的列，用sort: false
+        {value: "部门", key: "countDept"},// 不想排序的列，用sort: false
+        {value: "公司管理员", key: "countCompanyAdmin"},// 不想排序的列，用sort: false
         {value: "描述", key: "description"},
         {value: "创建时间", key: "create_time"},
     ];
@@ -72,20 +73,20 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     $scope.list();
 
     $scope.create = function () {
-        $scope.formUrl = 'project/html/organization/organization-add.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/company/company-add.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
     $scope.edit = function (data) {
         $scope.item = angular.copy(data);
-        $scope.formUrl = 'project/html/organization/organization-edit.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/company/company-edit.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
 
     $scope.submit = function (type, data) {
         if (type === 'add') {
-            HttpUtils.post("organization/add", data, function () {
+            HttpUtils.post("company/add", data, function () {
                 $scope.list();
                 Notification.success("新建成功");
                 $scope.closeToggleForm();
@@ -94,7 +95,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
             })
         }
         if (type === 'edit') {
-            $http.post('organization/update', data).then(function () {
+            $http.post('company/update', data).then(function () {
                 $scope.list();
                 Notification.success("编辑成功");
                 $scope.closeToggleForm();
@@ -108,7 +109,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
             Notification.info("请先选择组织！")
         } else {
             Notification.confirm("将删除所选组织，确认删除？", function () {
-                $http.post("organization/delete", $scope.ids).then(function () {
+                $http.post("company/delete", $scope.ids).then(function () {
                     Notification.success("删除成功");
                     $scope.list();
                 }, function (rep) {
@@ -123,7 +124,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         $scope.item = {};
     };
 
-    $scope.linkWorkspace = function (item) {
+    $scope.linkDept = function (item) {
         sessionStorage.setItem("orgParam", angular.toJson({
                 label: item.name,
                 value: item.id
@@ -132,14 +133,14 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         $state.go("workspace")
     };
 
-    $scope.linkOrgAdmin = function (item) {
+    $scope.linkCompanyAdmin = function (item) {
         if ($scope.selected === item.$$hashKey) {
             $scope.closeInformation();
             return;
         }
         $scope.selected = item.$$hashKey;
         $scope.orgId = item.id;
-        $scope.infoUrl = 'project/html/organization/organization-link-orgAdmin.html' + '?_t=' + Math.random();
+        $scope.infoUrl = 'project/html/company/company-link-orgAdmin.html' + '?_t=' + Math.random();
         $scope.toggleInfoForm(true);
     };
 
