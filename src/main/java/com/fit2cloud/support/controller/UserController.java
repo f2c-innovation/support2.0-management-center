@@ -19,7 +19,6 @@ import com.fit2cloud.support.dto.request.*;
 import com.fit2cloud.support.service.UserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.netflix.discovery.DiscoveryClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
