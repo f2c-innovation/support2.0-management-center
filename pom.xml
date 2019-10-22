@@ -233,6 +233,17 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>fit2cloud_innovation</id>
+            <name>fit2cloud_innovation</name>
+            <url>http://repository.fit2cloud.com/content/repositories/fit2cloud_innovation</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -247,6 +258,8 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+
     <distributionManagement>
         <repository>
             <id>releases</id>
