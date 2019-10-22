@@ -28,7 +28,6 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
 
     $scope.clickChecked = function (checked, item, isSelectAll) {
         $scope.singleClick(checked, item, isSelectAll);
-        // $scope.selectAll();
     };
 
     $scope.singleClick = function (checked, item, isSelectAll) {
@@ -51,7 +50,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         {value: "名称", key: "name", sort: false},
         {value: "部门", key: "countDept"},// 不想排序的列，用sort: false
         {value: "公司管理员", key: "countCompanyAdmin"},// 不想排序的列，用sort: false
-        {value: "描述", key: "description"},
+        {value: "公司邮箱", key: "email"},
         {value: "创建时间", key: "create_time"},
     ];
 
@@ -73,16 +72,15 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     $scope.list();
 
     $scope.create = function () {
-        $scope.formUrl = 'project/html/company/company-add.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/company/company_add.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
     $scope.edit = function (data) {
         $scope.item = angular.copy(data);
-        $scope.formUrl = 'project/html/company/company-edit.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/company/company_edit.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
-
 
     $scope.submit = function (type, data) {
         if (type === 'add') {
@@ -106,9 +104,9 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     };
     $scope.delete = function () {
         if ($scope.ids.length === 0) {
-            Notification.info("请先选择组织！")
+            Notification.info("请先选择公司！")
         } else {
-            Notification.confirm("将删除所选组织，确认删除？", function () {
+            Notification.confirm("将删除所选公司，确认删除？", function () {
                 $http.post("company/delete", $scope.ids).then(function () {
                     Notification.success("删除成功");
                     $scope.list();

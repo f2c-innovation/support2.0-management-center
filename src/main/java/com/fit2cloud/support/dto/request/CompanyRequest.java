@@ -12,6 +12,10 @@ public class CompanyRequest {
     @FuzzyQuery
     private String name;
 
+    @ApiModelProperty("公司邮箱,模糊匹配")
+    @FuzzyQuery
+    private String email;
+
     @ApiModelProperty(value = "排序Key", hidden = true)
     private String sort;
 
@@ -29,6 +33,14 @@ public class CompanyRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSort() {

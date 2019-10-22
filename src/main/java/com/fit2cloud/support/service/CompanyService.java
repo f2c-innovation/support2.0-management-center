@@ -13,6 +13,7 @@ import com.fit2cloud.commons.server.exception.F2CException;
 import com.fit2cloud.commons.server.model.SessionUser;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.service.OperationLogService;
+import com.fit2cloud.commons.server.utils.SessionUtils;
 import com.fit2cloud.commons.server.utils.UserRoleUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.UUIDUtil;
@@ -63,7 +64,6 @@ public class CompanyService {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(List<String> companyIds) {
-        // is has linked department?
         DepartmentExample countExample = new DepartmentExample();
         countExample.createCriteria().andCompanyIdIn(companyIds);
         long countWorkspace = departmentMapper.countByExample(countExample);
@@ -72,7 +72,7 @@ public class CompanyService {
         }
         companyIds.forEach(companyId -> {
             companyMapper.deleteByPrimaryKey(companyId);
-            OperationLogService.log(null, companyId, null, ResourceTypeConstants.ORGANIZATION.name(), ResourceOperation.DELETE, null);
+            OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.DELETE, null);
         });
     }
 
@@ -87,7 +87,7 @@ public class CompanyService {
         company.setCreateTime(Instant.now().toEpochMilli());
         try {
             companyMapper.insert(company);
-            OperationLogService.log(null, company.getId(), company.getName(), ResourceTypeConstants.ORGANIZATION.name(), ResourceOperation.CREATE, null);
+            OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.CREATE, null);
         } catch (DuplicateKeyException e) {
             F2CException.throwException(MessageConstants.NameDuplicateKey);
         }
@@ -106,7 +106,7 @@ public class CompanyService {
         BeanUtils.copyBean(company, request);
         try {
             companyMapper.updateByPrimaryKeySelective(company);
-            OperationLogService.log(null, company.getId(), company.getName(), ResourceTypeConstants.ORGANIZATION.name(), ResourceOperation.UPDATE, null);
+            OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.UPDATE, null);
         } catch (DuplicateKeyException e) {
             F2CException.throwException(MessageConstants.NameDuplicateKey);
         }

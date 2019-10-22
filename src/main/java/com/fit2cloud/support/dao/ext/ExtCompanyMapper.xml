@@ -25,6 +25,9 @@
             <if test="map.name!=null">
                 and company.name like #{map.name}
             </if>
+            <if test="map.email!=null">
+                and company.email like #{map.email}
+            </if>
             <if test="map.sort!=null">
                 order by ${map.sort}
             </if>
