@@ -15,5 +15,6 @@ CREATE TABLE `agent_company` (
   `id`    varchar(128) NOT NULL,
   `company_id`  varchar(128) NOT NULL COMMENT '客户id',
   `agent_id` varchar(128) NOT NULL COMMENT '代理商id',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;

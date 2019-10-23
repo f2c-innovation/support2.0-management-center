@@ -104,7 +104,7 @@ public class DepartmentService {
         }
         departmentMapper.insert(department);
 
-        OperationLogService.log(null, department.getId(), department.getName(), ResourceTypeConstants.WORKSPACE.name(), ResourceOperation.CREATE, null);
+        OperationLogService.log(null, department.getId(), department.getName(), ResourceTypeConstants.DEPARTMENT.name(), ResourceOperation.CREATE, null);
 
         return getDepartmentDTOById(deptId);
     }
@@ -147,7 +147,7 @@ public class DepartmentService {
         BeanUtils.copyBean(department, request);
 
         departmentMapper.updateByPrimaryKeySelective(department);
-        OperationLogService.log(null, department.getId(), department.getName(), ResourceTypeConstants.WORKSPACE.name(), ResourceOperation.UPDATE, null);
+        OperationLogService.log(null, department.getId(), department.getName(), ResourceTypeConstants.DEPARTMENT.name(), ResourceOperation.UPDATE, null);
         return getDepartmentDTOById(department.getId());
     }
 
@@ -159,7 +159,7 @@ public class DepartmentService {
         example.createCriteria().andSourceIdEqualTo(workspaceId);
         userRoleMapper.deleteByExample(example);
         departmentMapper.deleteByPrimaryKey(workspaceId);
-        OperationLogService.log(null, workspaceId, null, ResourceTypeConstants.WORKSPACE.name(), ResourceOperation.CREATE, null);
+        OperationLogService.log(null, workspaceId, null, ResourceTypeConstants.DEPARTMENT.name(), ResourceOperation.CREATE, null);
         redisMessagePublisher.publish(RedisConstants.Topic.DEPARTMENT_DELETE, workspaceId);
 
     }

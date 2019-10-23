@@ -115,6 +115,32 @@
               ]
             }
           ]
+        },
+        {
+          "order": 5,
+          "title": "代理商",
+          "name": "agent",
+          "url": "/agent",
+          "templateUrl": "project/html/agent/agent_list.html",
+          "requiredPermissions": [
+            {
+              "role": "ADMIN",
+              "logical": "OR",
+              "permissions": [
+                "AGENT:READ",
+                "AGENT:READ+CREATE",
+                "AGENT:READ+EDIT",
+                "AGENT:READ+DELETE"
+              ]
+            },
+            {
+              "role": "ORGADMIN",
+              "logical": "OR",
+              "permissions": [
+                "AGENT:READ"
+              ]
+            }
+          ]
         }
       ]
     },

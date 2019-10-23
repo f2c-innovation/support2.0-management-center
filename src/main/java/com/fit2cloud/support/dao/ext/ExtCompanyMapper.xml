@@ -8,28 +8,28 @@
         <result column="countDept" jdbcType="BIGINT" property="countDept"/>
     </resultMap>
 
-    <select id="paging" resultMap="CompanyDtoMap">
+    <select id="paging" resultMap="CompanyDtoMap" parameterType="com.fit2cloud.support.dto.request.CompanyRequest">
         select
             company.*,
             (select count(user_role.id)
              from user_role
-             where company.id = user_role.source_id)       as countCompanyAdmin,
+             where company.id = user_role.source_id)  as countCompanyAdmin,
             (select count(department.id)
              from department
              where department.company_id = company.id) as countDept
         from company
         <where>
-            <if test="map.id!=null">
-                and company.id = #{map.id}
+            <if test="id!=null">
+                and company.id = #{id}
             </if>
-            <if test="map.name!=null">
-                and company.name like #{map.name}
+            <if test="name!=null">
+                and company.name like #{name}
             </if>
-            <if test="map.email!=null">
-                and company.email like #{map.email}
+            <if test="email!=null">
+                and company.email like #{email}
             </if>
-            <if test="map.sort!=null">
-                order by ${map.sort}
+            <if test="sort!=null">
+                order by ${sort}
             </if>
         </where>
     </select>

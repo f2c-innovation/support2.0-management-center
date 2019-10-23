@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtAgentMapper">
+
+    <resultMap id="AgentDtoMap" type="com.fit2cloud.support.dto.AgentDTO"
+               extends="com.fit2cloud.commons.server.base.mapper.AgentMapper.ResultMapWithBLOBs">
+<!--        <collection property="subscriptionCount"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentSubscriptionMapper.getSubscriptionCountByAgentId"></collection>-->
+<!--        <collection property="companyCount"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentCompanyMapper.getCompanyCountByAgentId"></collection>-->
+<!--        <collection property="userCount"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentUserMapper.getUserCountByAgentId"></collection>-->
+<!--        <collection property="agentUserDtoList"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentUserMapper.selectAgentUserByAgentId"></collection>-->
+<!--        <collection property="agentCompanyDtoList"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentCompanyMapper.selectByAgentId"/>-->
+<!--        <collection property="agentSubscriptionDtoList"-->
+<!--                    column="id" select="com.fit2cloud.support.dao.ext.ExtAgentSubscriptionMapper.selectByAgentId"></collection>-->
+    </resultMap>
+
+    <select id="selectBySearch" parameterType="com.fit2cloud.support.dto.request.AgentRequest" resultMap="AgentDtoMap">
+        SELECT
+        agent.*
+        FROM agent
+        WHERE agent.is_delete = false
+        <if test="id!=null">
+          and agent.id = #{id}
+        </if>
+        <if test="name!=null">
+            and agent.name like #{name}
+        </if>
+        order by create_time desc
+    </select>
+
+    <update id="deleteByAgentId">
+        update agent set is_delete = true where id = #{agentId}
+    </update>
+
+</mapper>

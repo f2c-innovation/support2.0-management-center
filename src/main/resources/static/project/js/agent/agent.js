@@ -1,12 +1,8 @@
-/**
- * Created by mgh on 2019/10/23.
- */
-ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSearch, $http, Notification, operationArr, $state) {
+ProjectApp.controller('agentController', function ($scope, HttpUtils, FilterSearch, $http, Notification, operationArr, $state) {
 
     // 定义搜索条件
     $scope.conditions = [
-        {key: "name", name: "名称", directive: "filter-contains"},
-        {key: "email", name: "公司邮箱", directive: "filter-contains"}
+        {key: "name", name: "名称", directive: "filter-contains"}
     ];
 
     // 用于传入后台的参数
@@ -20,7 +16,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         checkValue: false,
         change: function (checked) {
             $scope.items.forEach(function (item) {
-                if (!item.countDept > 0) {
+                if (!item.subscriptionCount > 0) {
                     item.enable = checked;
                     $scope.singleClick(checked, item, true);
                 }
@@ -66,7 +62,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         if ($scope.sort) {
             condition.sort = $scope.sort.sql;
         }
-        HttpUtils.paging($scope, "company", condition, function () {
+        HttpUtils.paging($scope, "agent", condition, function () {
             angular.forEach($scope.items, function (item) {
                 item.enable = false;
             });
@@ -75,19 +71,19 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     $scope.list();
 
     $scope.create = function () {
-        $scope.formUrl = 'project/html/company/company_add.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/agent/agent_add.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
     $scope.edit = function (data) {
         $scope.item = angular.copy(data);
-        $scope.formUrl = 'project/html/company/company_edit.html' + '?_t=' + Math.random();
+        $scope.formUrl = 'project/html/agent/agent_edit.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
     $scope.submit = function (type, data) {
         if (type === 'add') {
-            HttpUtils.post("company/add", data, function () {
+            HttpUtils.post("agent/add", data, function () {
                 $scope.list();
                 Notification.success("新建成功");
                 $scope.closeToggleForm();
@@ -96,7 +92,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
             })
         }
         if (type === 'edit') {
-            $http.post('company/update', data).then(function () {
+            $http.post('agent/update', data).then(function () {
                 $scope.list();
                 Notification.success("编辑成功");
                 $scope.closeToggleForm();
@@ -110,7 +106,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
             Notification.info("请先选择公司！")
         } else {
             Notification.confirm("将删除所选公司，确认删除？", function () {
-                $http.post("company/delete", $scope.ids).then(function () {
+                $http.post("agent/delete", $scope.ids).then(function () {
                     Notification.success("删除成功");
                     $scope.list();
                 }, function (rep) {
@@ -141,7 +137,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         }
         $scope.selected = item.$$hashKey;
         $scope.orgId = item.id;
-        $scope.infoUrl = 'project/html/company/company-link-orgAdmin.html' + '?_t=' + Math.random();
+        $scope.infoUrl = 'project/html/agent/agent-link-orgAdmin.html' + '?_t=' + Math.random();
         $scope.toggleInfoForm(true);
     };
 

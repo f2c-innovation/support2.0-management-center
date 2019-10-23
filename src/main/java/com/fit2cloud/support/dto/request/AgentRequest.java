@@ -4,20 +4,16 @@ import com.fit2cloud.commons.annotation.FuzzyQuery;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * create by mgh 2019.10.22
+ * create by mgh 2019.10.23
  */
-public class CompanyRequest {
+public class AgentRequest {
 
-    @ApiModelProperty("公司ID")
+    @ApiModelProperty("代理商ID")
     private String id;
 
-    @ApiModelProperty("公司名称,模糊匹配")
+    @ApiModelProperty("代理商名称,模糊匹配")
     @FuzzyQuery
     private String name;
-
-    @ApiModelProperty("公司邮箱,模糊匹配")
-    @FuzzyQuery
-    private String email;
 
     @ApiModelProperty(value = "排序Key", hidden = true)
     private String sort;
@@ -36,14 +32,6 @@ public class CompanyRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getSort() {

@@ -37,6 +37,13 @@ public class PermissionConstants {
     public static final String COMPANY_DELETE = "COMPANY:READ+DELETE";
     //end  company相关权限
 
+    // start agent相关权限
+    public static final String AGENT_READ = "AGENT:READ";
+    public static final String AGENT_CREATE = "AGENT:READ+CREATE";
+    public static final String AGENT_EDIT = "AGENT:READ+EDIT";
+    public static final String AGENT_DELETE = "AGENT:READ+DELETE";
+    //end  agent相关权限
+
     // start 标签相关权限
     public static final String TAG_READ = "TAG:READ";
     public static final String TAG_CREATE = "TAG:READ+CREATE";

@@ -179,6 +179,39 @@
       ]
     },
     {
+      "id": "AGENT:READ",
+      "name": "查看代理商",
+      "resourceId": "AGENT",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN"
+      ]
+    },
+    {
+      "id": "AGENT:READ+CREATE",
+      "name": "创建代理商",
+      "resourceId": "AGENT",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "AGENT:READ+EDIT",
+      "name": "编辑代理商",
+      "resourceId": "AGENT",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "AGENT:READ+DELETE",
+      "name": "删除代理商",
+      "resourceId": "AGENT",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
       "id": "SYSTEM:OPRATE",
       "name": "系统管理",
       "resourceId": "SYSTEM",
@@ -207,6 +240,10 @@
     {
       "id": "DEPARTMENT",
       "name": "部门"
+    },
+    {
+      "id": "AGENT",
+      "name": "代理商"
     },
     {
       "id": "SYSTEM",

@@ -53,7 +53,7 @@ public class CompanyController {
     @RequiresPermissions(PermissionConstants.COMPANY_READ)
     public Pager<List<CompanyDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody CompanyRequest request) {
         Page page = PageHelper.startPage(goPage, pageSize, true);
-        return PageUtils.setPageInfo(page, companyService.paging(BeanUtils.objectToMap(request)));
+        return PageUtils.setPageInfo(page, companyService.paging(request));
     }
 
     @RequiresPermissions(PermissionConstants.ROLE_READ)

@@ -21,6 +21,7 @@ import com.fit2cloud.support.common.constants.MessageConstants;
 import com.fit2cloud.support.dao.ext.ExtCompanyMapper;
 import com.fit2cloud.support.dao.ext.ExtDepartmentMapper;
 import com.fit2cloud.support.dto.CompanyDTO;
+import com.fit2cloud.support.dto.request.CompanyRequest;
 import com.fit2cloud.support.dto.request.CreateCompanyRequest;
 import com.fit2cloud.support.dto.request.UpdateCompanyRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -58,8 +59,8 @@ public class CompanyService {
         return companyMapper.selectByExample(example);
     }
 
-    public List<CompanyDTO> paging(Map<String, Object> map) {
-        return extCompanyMapper.paging(map);
+    public List<CompanyDTO> paging(CompanyRequest request) {
+        return extCompanyMapper.paging(request);
     }
 
     @Transactional(rollbackFor = Exception.class)

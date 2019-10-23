@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
   `dept_name` varchar(100) NOT NULL DEFAULT '' COMMENT '部门名称',
   `resource_user_id` varchar(64) NOT NULL DEFAULT '' COMMENT '资源拥有者ID',
   `resource_user_name` varchar(100) NOT NULL DEFAULT '' COMMENT '资源拥有者名称',
+  `resource_type` varchar(45) NOT NULL DEFAULT '' COMMENT '资源类型',
   `resource_id` varchar(64) DEFAULT NULL COMMENT '资源ID',
   `resource_name` varchar(64) DEFAULT NULL COMMENT '资源名称',
   `operation` varchar(45) NOT NULL DEFAULT '' COMMENT '操作',
@@ -12,7 +13,9 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
   `module` varchar(20) DEFAULT 'management-center' COMMENT '模块',
   `source_ip` varchar(15) DEFAULT NULL COMMENT '操作方IP',
   PRIMARY KEY (`id`),
+  KEY `IDX_USER_ID` (`resource_user_id`),
   KEY `IDX_OP` (`operation`),
   KEY `IDX_RES_ID` (`resource_id`),
-  KEY `IDX_RES_NAME` (`resource_name`)
+  KEY `IDX_RES_NAME` (`resource_name`),
+  KEY `IDX_USER_NAME` (`resource_user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
