@@ -17,21 +17,23 @@
             </div>
         </md-input-container>
 
-        <md-select name="adminRoleId" ng-model="roleInfo.roleId" required
-                   ng-change="changeRole(roleInfo,roleInfo.roleId)">
-            <md-option ng-value="role.id"
-                       ng-repeat="role in roles"
-                       ng-if="filterRole(role,roleInfo)">
-                {{role.name}}
-            </md-option>
-        </md-select>
-        <md-input-container class="md-block" flex-gt-sm>
+        <md-input-container class="md-block" layout-gt-xs="row">
             <label>代理商</label>
-            <input md-maxlength="50" name="content" ng-model="item.agent">
-            <div ng-messages="companyFrom.agentIdList.$error">
+            <md-select name="agentId" ng-model="item.agentId" multiple required>
+                <md-option ng-value="agent.id"
+                           ng-repeat="agent in agentList">
+                    {{agent.name}}
+                </md-option>
+            </md-select>
+            <div ng-messages="companyFrom.agentId.$error">
                 <div ng-message="required">必填.</div>
-                <div ng-message="md-maxlength">不要超过50个字符</div>
             </div>
+            <md-icon style="cursor:pointer;"
+                     ng-if="agentList.length>1"
+                     ng-click="filterAgent(agent,item)">clear
+            </md-icon>
+            <md-icon ng-if="agentList.length <= 1">
+            </md-icon>
         </md-input-container>
 
         <md-input-container class="md-block" flex-gt-sm>

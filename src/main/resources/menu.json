@@ -53,7 +53,7 @@
           "title": "角色",
           "name": "role",
           "url": "/role",
-          "templateUrl": "project/html/role/role-list.html",
+          "templateUrl": "project/html/role/role_list.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",

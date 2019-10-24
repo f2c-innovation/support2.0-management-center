@@ -6,7 +6,9 @@
       "name": "仪盘表",
       "resourceId": "DASHBOARD",
       "parentRoles": [
-        "ADMIN"
+        "ADMIN",
+        "ORGADMIN",
+        "USER"
       ]
     },
     {
@@ -15,7 +17,8 @@
       "resourceId": "USER",
       "parentRoles": [
         "ADMIN",
-        "ORGADMIN"
+        "ORGADMIN",
+        "USER"
       ]
     },
     {
@@ -85,7 +88,9 @@
       "name": "查看角色",
       "resourceId": "ROLE",
       "parentRoles": [
-        "ADMIN"
+        "ADMIN",
+        "ORGADMIN",
+        "USER"
       ]
     },
     {
@@ -184,7 +189,9 @@
       "resourceId": "AGENT",
       "parentRoles": [
         "ADMIN",
-        "ORGADMIN"
+        "ORGADMIN",
+        "USER",
+        "other"
       ]
     },
     {

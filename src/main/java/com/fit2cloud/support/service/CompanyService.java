@@ -51,7 +51,7 @@ public class CompanyService {
 
     public Object companies(SessionUser sessionUser) {
         CompanyExample example = new CompanyExample();
-        if (StringUtils.equals(sessionUser.getParentRoleId(), RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.equals(sessionUser.getParentRoleId(), RoleConstants.Id.ORGADMIN.name())) {
             Set<String> resourceIds = UserRoleUtils.getResourceIds(sessionUser.getId());
             example.createCriteria().andIdIn(new ArrayList<>(resourceIds));
         }

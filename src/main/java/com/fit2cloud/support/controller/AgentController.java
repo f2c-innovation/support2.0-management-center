@@ -15,7 +15,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 代理商
@@ -47,8 +49,5 @@ public class AgentController {
         Page page = PageHelper.startPage(goPage, pageSize, true);
         return PageUtils.setPageInfo(page, agentService.selectBySearch(request));
     }
-
-
-
 
 }

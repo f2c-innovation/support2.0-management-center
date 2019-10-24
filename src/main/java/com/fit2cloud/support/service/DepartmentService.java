@@ -59,7 +59,7 @@ public class DepartmentService {
 
     public List<Department> departments() {
         DepartmentExample example = new DepartmentExample();
-        if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.ORGADMIN.name())) {
             example.createCriteria().andCompanyIdEqualTo(SessionUtils.getCompanyId());
         }
         example.setOrderByClause("name");
@@ -99,7 +99,7 @@ public class DepartmentService {
         String deptId = UUIDUtil.newUUID();
         department.setId(deptId);
         department.setCreateTime(Instant.now().toEpochMilli());
-        if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.ORGADMIN.name())) {
             department.setCompanyId(SessionUtils.getCompanyId());
         }
         departmentMapper.insert(department);

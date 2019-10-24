@@ -17,6 +17,9 @@
             <if test="map.name!=null">
                 AND role.name like #{map.name}
             </if>
+            <if test="map.aliasName!=null">
+                AND role.alias_name like #{map.aliasName}
+            </if>
         </where>
 
         order by type desc,parent_id asc

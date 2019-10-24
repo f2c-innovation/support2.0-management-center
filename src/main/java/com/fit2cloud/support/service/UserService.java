@@ -195,7 +195,7 @@ public class UserService {
                             }
                     );
                 }
-                if (StringUtils.equals(parentId, RoleConstants.Id.CompanyADMIN.name())) {
+                if (StringUtils.equals(parentId, RoleConstants.Id.ORGADMIN.name())) {
                     roleInfo.getCompanyIds().forEach(organizationId -> {
                                 if (!hasUserRole(userId, roleInfo.getRoleId(), organizationId)) {
                                     insertUserRoleInfo(userRole, organizationId, null);
@@ -314,7 +314,7 @@ public class UserService {
             if (StringUtils.equals(parentId, RoleConstants.Id.USER.name())) {
                 if (roleInfo.getDepartment()) {
                     CreateDepartmentRequest createDepartmentRequest = new CreateDepartmentRequest();
-                    if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.CompanyADMIN.name())) {
+                    if (StringUtils.equalsIgnoreCase(SessionUtils.getUser().getParentRoleId(), RoleConstants.Id.ORGADMIN.name())) {
                         createDepartmentRequest.setCompanyId(SessionUtils.getCompanyId());
                     } else {
                         createDepartmentRequest.setCompanyId(roleInfo.getSelectCompanyId());
@@ -328,7 +328,7 @@ public class UserService {
                     roleInfo.getDeptIds().forEach(workspaceId -> insertUserRoleInfo(userRole, workspaceId, userOperate));
                 }
             }
-            if (StringUtils.equals(parentId, RoleConstants.Id.CompanyADMIN.name())) {
+            if (StringUtils.equals(parentId, RoleConstants.Id.ORGADMIN.name())) {
                 roleInfo.getCompanyIds().forEach(organizationId -> insertUserRoleInfo(userRole, organizationId, userOperate));
             }
             if (StringUtils.equals(parentId, RoleConstants.Id.ADMIN.name())) {
@@ -468,7 +468,7 @@ public class UserService {
         if (role == null) {
             F2CException.throwException("角色不存在");
         }
-        if (!RoleConstants.Id.CompanyADMIN.name().equalsIgnoreCase(role.getParentId())) {
+        if (!RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
             F2CException.throwException("角色不是公司管理员");
         }
 
@@ -631,7 +631,7 @@ public class UserService {
                 checkCurrentCompanyHasDeptIds(request.getResourceIds());
             }
             checkHasDeptIds(request.getResourceIds());
-        } else if (RoleConstants.Id.CompanyADMIN.name().equalsIgnoreCase(role.getParentId())) {
+        } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
             //分系统管理员和组织管理员
             if (roleCommonService.isCompanyAdmin()) {
                 //组织管理员只能添加当前组织
@@ -723,7 +723,7 @@ public class UserService {
                 checkCurrentCompanyHasDeptIds(request.getResourceIds());
             }
             checkHasDeptIds(request.getResourceIds());
-        } else if (RoleConstants.Id.CompanyADMIN.name().equalsIgnoreCase(role.getParentId())) {
+        } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
             if (roleCommonService.isCompanyAdmin()) {
                 //组织管理员只能删除当前组织
                 List<String> list = new ArrayList<>();

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author: chunxing
- * Date: 2018/5/22  下午2:25
+ * Author: maguohao
+ * Date: 2019/10/24  下午12:25
  * Description:
  */
 public interface ExtRoleMapper {

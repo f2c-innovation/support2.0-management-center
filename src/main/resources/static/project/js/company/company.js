@@ -75,14 +75,25 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
     $scope.list();
 
     $scope.create = function () {
+        $scope.searchAgentList();
         $scope.formUrl = 'project/html/company/company_add.html' + '?_t=' + Math.random();
         $scope.toggleForm();
     };
 
     $scope.edit = function (data) {
+        $scope.searchAgentList();
         $scope.item = angular.copy(data);
         $scope.formUrl = 'project/html/company/company_edit.html' + '?_t=' + Math.random();
         $scope.toggleForm();
+    };
+
+    $scope.searchAgentList = function () {
+        HttpUtils.post("agent/1/10000", {}, function (response) {
+            console.log(response.data.listObject)
+            $scope.agentList = response.data.listObject;
+        }, function (rep) {
+            Notification.danger(rep.message);
+        })
     };
 
     $scope.submit = function (type, data) {
@@ -149,5 +160,18 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         $scope.item = {};
         $scope.selected = "";
         $scope.toggleInfoForm(false);
+    };
+
+    $scope.filterAgent = function (agent, item) {
+        let value = true;
+        if (item.selects.length === 0) {
+            value = true;
+        }
+        angular.forEach(item.selects, function (agentList) {
+            if (agent.id === roleId) {
+                value = false;
+            }
+        });
+        return value;
     };
 });

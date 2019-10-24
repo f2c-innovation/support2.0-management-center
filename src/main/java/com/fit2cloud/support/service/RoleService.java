@@ -19,7 +19,7 @@ import com.fit2cloud.support.common.constants.MessageConstants;
 import com.fit2cloud.support.dao.ext.ExtRoleMapper;
 import com.fit2cloud.support.dto.RoleDTO;
 import com.fit2cloud.support.dto.RoleOperate;
-import com.fit2cloud.support.model.SupportTreeNode;
+import com.fit2cloud.support.model.McTreeNode;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +34,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Author: chunxing
- * Date: 2018/5/22  下午12:46
+ * Author: maguohao
+ * Date: 2019/10/24  下午12:46
  * Description:
  */
 @Service
@@ -130,15 +130,15 @@ public class RoleService extends RoleCommonService {
 
     public List<Role> roles(String parentRoleId) {
         RoleExample example = new RoleExample();
-        if (StringUtils.endsWithIgnoreCase(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.endsWithIgnoreCase(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
             example.createCriteria().andParentIdEqualTo(RoleConstants.Id.USER.name());
-            example.or().andParentIdEqualTo(RoleConstants.Id.CompanyADMIN.name());
+            example.or().andParentIdEqualTo(RoleConstants.Id.ORGADMIN.name());
         }
         example.setOrderByClause("type desc,parent_id");
         return roleMapper.selectByExample(example);
     }
 
-    public List<SupportTreeNode> authorizePermission(String roleId) {
+    public List<McTreeNode> authorizePermission(String roleId) {
         RolePermissionExample example = new RolePermissionExample();
         example.createCriteria().andRoleIdEqualTo(roleId);
         List<RolePermission> rolePermissions = rolePermissionMapper.selectByExample(example);
@@ -151,59 +151,59 @@ public class RoleService extends RoleCommonService {
             convertNode2Checked(node, permissions);
         }
 
-        List<SupportTreeNode> supportTreeNodes = convertTreeNode2McTreeNode(nodeList);
+        List<McTreeNode> mcTreeNodes = convertTreeNode2McTreeNode(nodeList);
 
         //如果是系统内置角色
         if (isSystemRole(roleId)) {
             List<Module> moduleList = moduleService.getLinkEnableModuleList();
             Set<String> moduleIds = moduleList.stream().map(Module::getId).collect(Collectors.toSet());
 
-            for (SupportTreeNode supportTreeNode : supportTreeNodes) {
-                if (!moduleIds.contains(supportTreeNode.getId())) {
-                    convertNode2Checked(supportTreeNode);
+            for (McTreeNode mcTreeNode : mcTreeNodes) {
+                if (!moduleIds.contains(mcTreeNode.getId())) {
+                    convertNode2Checked(mcTreeNode);
                 } else {
-                    supportTreeNode.setType("link");
+                    mcTreeNode.setType("link");
                 }
             }
         }
 
-        return supportTreeNodes;
+        return mcTreeNodes;
     }
 
-    private List<SupportTreeNode> convertTreeNode2McTreeNode(List<TreeNode> nodeList) {
-        List<SupportTreeNode> supportTreeNodes = new ArrayList<>();
+    private List<McTreeNode> convertTreeNode2McTreeNode(List<TreeNode> nodeList) {
+        List<McTreeNode> mcTreeNodes = new ArrayList<>();
 
         for (TreeNode treeNode : nodeList) {
-            supportTreeNodes.add(convertTreeNode2McTreeNode(treeNode));
+            mcTreeNodes.add(convertTreeNode2McTreeNode(treeNode));
         }
-        return supportTreeNodes;
+        return mcTreeNodes;
     }
 
-    private SupportTreeNode convertTreeNode2McTreeNode(TreeNode treeNode) {
-        SupportTreeNode supportTreeNode = new SupportTreeNode();
-        BeanUtils.copyBean(supportTreeNode, treeNode);
-        List<SupportTreeNode> children = new ArrayList<>();
+    private McTreeNode convertTreeNode2McTreeNode(TreeNode treeNode) {
+        McTreeNode mcTreeNode = new McTreeNode();
+        BeanUtils.copyBean(mcTreeNode, treeNode);
+        List<McTreeNode> children = new ArrayList<>();
         if (!CollectionUtils.isEmpty(treeNode.getChildren())) {
             for (TreeNode node : treeNode.getChildren()) {
                 children.add(convertTreeNode2McTreeNode(node));
             }
         }
-        supportTreeNode.setChildren(children);
-        return supportTreeNode;
+        mcTreeNode.setChildren(children);
+        return mcTreeNode;
     }
 
     private boolean isSystemRole(String roleId) {
         return RoleConstants.Id.ADMIN.name().equals(roleId)
-                || RoleConstants.Id.CompanyADMIN.name().equals(roleId)
+                || RoleConstants.Id.ORGADMIN.name().equals(roleId)
                 || RoleConstants.Id.USER.name().equals(roleId);
     }
 
 
-    private void convertNode2Checked(SupportTreeNode supportTreeNode) {
-        supportTreeNode.setChecked(true);
-        supportTreeNode.setDisabled(true);
-        if (!CollectionUtils.isEmpty(supportTreeNode.getChildren())) {
-            for (SupportTreeNode node : supportTreeNode.getChildren()) {
+    private void convertNode2Checked(McTreeNode mcTreeNode) {
+        mcTreeNode.setChecked(true);
+        mcTreeNode.setDisabled(true);
+        if (!CollectionUtils.isEmpty(mcTreeNode.getChildren())) {
+            for (McTreeNode node : mcTreeNode.getChildren()) {
                 convertNode2Checked(node);
             }
         }

@@ -53,7 +53,7 @@ public class UserController {
     public Pager<List<UserDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody UserRequest request) {
         Map<String, Object> map = BeanUtils.objectToMap(request);
         String parentRoleId = SessionUtils.getUser().getParentRoleId();
-        if (StringUtils.equals(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.equals(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
             List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
             resourceIds.add(SessionUtils.getCompanyId());
             map.put("resourceIds", resourceIds);
@@ -181,7 +181,7 @@ public class UserController {
     public ResponseEntity<byte[]> export(@RequestBody ExcelExportRequest request) throws Exception {
         byte[] bytes = null;
         String parentRoleId = SessionUtils.getUser().getParentRoleId();
-        if (StringUtils.equals(parentRoleId, RoleConstants.Id.CompanyADMIN.name())) {
+        if (StringUtils.equals(parentRoleId, RoleConstants.Id.ORGADMIN.name())) {
             List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
             request.getParams().put("resourceIds", resourceIds);
             bytes = userService.exportUsers(request);
