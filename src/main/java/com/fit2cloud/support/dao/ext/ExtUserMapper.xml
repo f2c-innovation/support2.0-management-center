@@ -93,25 +93,25 @@
     </select>
     <select id="resourcePaging" resultType="com.fit2cloud.commons.server.base.domain.Department">
         select
-        <if test="resourceType =='deptartment'">
-            deptartment.name as name,
-            deptartment.create_time as createTime
+        <if test="resourceType =='department'">
+            department.name as name,
+            department.create_time as createTime
         </if>
         <if test="resourceType =='company'">
             company.name as name,
             company.create_time as createTime
         </if>
         from user_role
-        <if test="resourceType =='deptartment'">
-            join deptartment
+        <if test="resourceType =='department'">
+            join department
         </if>
         <if test="resourceType =='company'">
             join company
         </if>
         where user_role.user_id = #{userId}
         and user_role.role_id = #{roleId}
-        <if test="resourceType =='deptartment'">
-            and deptartment.id = user_role.source_id
+        <if test="resourceType =='department'">
+            and department.id = user_role.source_id
         </if>
         <if test="resourceType =='company'">
             and company.id = user_role.source_id

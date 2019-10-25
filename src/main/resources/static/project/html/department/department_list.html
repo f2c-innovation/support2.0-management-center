@@ -1,10 +1,10 @@
-<div layout-fill class="content-backdrop" ng-controller="WorkspaceController" ng-cloak>
+<div layout-fill class="content-backdrop" ng-controller="DeptartmentController" ng-cloak>
     <div cg-busy="{promise:loadingLayer,minDuration:500}" layout="column" layout-fill>
         <md-toolbar class="content-toolbar">
             <div class="md-toolbar-tools">
-                <div>工作空间列表</div>
+                <div>部门列表</div>
                 <md-button class="md-primary" ng-click="create()"
-                           has-permissions="WORKSPACE:READ+CREATE">
+                           has-permissions="DEPARTMENT:READ+CREATE">
                     <md-icon>add_circle_outline</md-icon>
                     创建
                 </md-button>
@@ -27,7 +27,7 @@
                     <tbody>
                     <tr ng-repeat="item in items">
                         <td>{{item.name}}</td>
-                        <td>{{item.organizationName}}</td>
+                        <td>{{item.companyName}}</td>
                         <td>
                             <a class="md-primary" style="cursor:pointer" href=""
                                ng-if="item.countAuthorizedUser>0"
@@ -37,11 +37,11 @@
                             <span ng-if="item.countAuthorizedUser===0">-</span>
                         </td>
                         <td>{{item.description}}</td>
-                        <td has-permissions="WORKSPACE:READ+EDIT,WORKSPACE:READ+DELETE">
+                        <td has-permissions="DEPARTMENT:READ+EDIT,DEPARTMENT:READ+DELETE">
                             <!--设置名成加op="'其他名称'"，默认的名称为"操作"；设置宽度加width="4 或其他整数"-->
                             <table-menus>
                                 <md-menu-item>
-                                    <md-button has-permissions="WORKSPACE:READ+EDIT"
+                                    <md-button has-permissions="DEPARTMENT:READ+EDIT"
                                                ng-click="edit(item)">
                                         <md-icon class="md-18">edit</md-icon>
                                         编辑
@@ -49,7 +49,7 @@
                                 </md-menu-item>
                                 <md-menu-divider></md-menu-divider>
                                 <md-menu-item>
-                                    <md-button has-permissions="WORKSPACE:READ+DELETE"
+                                    <md-button has-permissions="DEPARTMENT:READ+DELETE"
                                                ng-click="delete(item)">
                                         <md-icon>delete</md-icon>
                                         删除

@@ -50,8 +50,8 @@ ProjectApp.filter('resourceType', function () {
         if (input === 'USER') {
             return '用户'
         }
-        if (input === 'WORKSPACE') {
-            return '工作空间'
+        if (input === 'DEPARTMENT') {
+            return '部门'
         }
         if (input === 'VIRTUALMACHINE') {
             return '云主机'

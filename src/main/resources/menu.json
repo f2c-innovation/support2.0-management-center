@@ -95,7 +95,7 @@
           "title": "部门",
           "name": "department",
           "url": "/department",
-          "templateUrl": "project/html/deptartment/deptartment_list.html",
+          "templateUrl": "project/html/department/department_list.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",

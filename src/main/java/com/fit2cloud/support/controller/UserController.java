@@ -76,7 +76,7 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @ApiOperation(value = "创建组织管理员")
+    @ApiOperation(value = "创建公司管理员")
     @PostMapping(value = "/add/company")
     @RequiresPermissions(PermissionConstants.USER_CREATE)
     public UserDTO createOrganizationUser(@RequestBody CreateCompanyUserRequest request) {

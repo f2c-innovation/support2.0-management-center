@@ -7,7 +7,7 @@ public class UpdateDepartmentRequest {
     @ApiModelProperty(value = "部门ID", required = true)
     private String id;
 
-    @ApiModelProperty(value = "公司ID,公司管理员默认当前组织(可不填)", required = true)
+    @ApiModelProperty(value = "公司ID,公司管理员默认当前公司(可不填)", required = true)
     private String companyId;
 
     @ApiModelProperty(value = "部门名称", required = true)

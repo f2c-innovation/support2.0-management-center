@@ -12,7 +12,7 @@ public class DeleteRoleFromUserRequest {
     @ApiModelProperty(value = "用户ID",required = true)
     private String userId;
 
-    @ApiModelProperty(value = "资源Id列表,系统管理员(roleId为组织管理员和工作空间用户必填)、组织管理员(roleId为工作空间用户必填)")
+    @ApiModelProperty(value = "资源Id列表,系统管理员(roleId为公司管理员和部门用户必填)、公司管理员(roleId为工作空间用户必填)")
     private List<String> resourceIds;
 
     public String getRoleId() {

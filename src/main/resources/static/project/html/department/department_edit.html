@@ -1,14 +1,14 @@
 <div ng-cloak>
     <md-toolbar class="content-toolbar">
         <div class="md-toolbar-tools">
-            <div>新建工作空间</div>
+            <div>编辑工作空间</div>
         </div>
     </md-toolbar>
-    <form name="workspaceForm" class="md-padding">
+    <form name="departmentForm" class="md-padding">
         <md-input-container class="md-block" flex-gt-sm>
             <label>名称</label>
             <input minlength="2" md-maxlength="30" required name="name" ng-model="item.name">
-            <div ng-messages="workspaceForm.name.$error">
+            <div ng-messages="departmentForm.name.$error">
                 <div ng-message="required">必填.</div>
                 <div ng-message="md-maxlength">不要超过30个字符</div>
                 <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
@@ -19,11 +19,11 @@
 
         <div layout="row" layout-align="start" flex ng-if="currentRole===roleConst.admin">
             <md-input-container flex="100">
-                <label>组织</label>
-                <md-select name="roleId" ng-model="item.organizationId" required>
+                <label>公司</label>
+                <md-select name="roleId" ng-model="item.companyId" required>
                     <md-option ng-value="org.id" ng-repeat="org in orgs">{{org.name}}</md-option>
                 </md-select>
-                <div ng-messages="workspaceForm.roleId.$error">
+                <div ng-messages="departmentForm.roleId.$error">
                     <div ng-message="required">必填.</div>
                 </div>
             </md-input-container>
@@ -31,7 +31,7 @@
         <md-input-container class="md-block" flex-gt-sm>
             <label>描述</label>
             <input md-maxlength="50" name="description" ng-model="item.description">
-            <div ng-messages="workspaceForm.description.$error">
+            <div ng-messages="departmentForm.description.$error">
                 <div ng-message="md-maxlength">不要超过50个字符</div>
             </div>
         </md-input-container>
@@ -40,7 +40,7 @@
         <md-button class="md-raised" ng-click="closeToggleForm();">
             取消
         </md-button>
-        <md-button class="md-raised md-primary" ng-disabled="workspaceForm.$invalid" ng-click="submit('add',item)">
+        <md-button class="md-raised md-primary" ng-disabled="departmentForm.$invalid" ng-click="submit('edit',item)">
             保存
         </md-button>
     </div>

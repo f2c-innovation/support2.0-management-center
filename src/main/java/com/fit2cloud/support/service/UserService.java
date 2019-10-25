@@ -99,7 +99,7 @@ public class UserService {
         UserRoleExample userRoleExample = new UserRoleExample();
 
         if (roleCommonService.isCompanyAdmin()) {
-            //当为组织管理员时，删除当前组织和当前组织下的工作空间（解绑关系user_role）
+            //当为组管理员时，删除当前公司和当前公司下的工作空间（解绑关系user_role）
             List<String> list = new ArrayList<>();
             list.add(SessionUtils.getCompanyId());
             List<Department> departments = departmentService.departmentByCompanyId(SessionUtils.getCompanyId());
@@ -261,7 +261,7 @@ public class UserService {
 
 
         } else if (roleCommonService.isCompanyAdmin()) {
-            //删除要编辑的用户在当前组织下的user_role的信息，然后reinsert
+            //删除要编辑的用户在当前公司下的user_role的信息，然后reinsert
             //由于userOperate.roleInfoList 传的数据有特殊性 注意
             List<String> list = new ArrayList<>();
             list.add(SessionUtils.getCompanyId());
@@ -315,7 +315,7 @@ public class UserService {
                     } else {
                         createDepartmentRequest.setCompanyId(roleInfo.getSelectCompanyId());
                     }
-                    createDepartmentRequest.setName(userOperate.getName() + "-工作空间");
+                    createDepartmentRequest.setName(userOperate.getName() + "-部门");
                     createDepartmentRequest.setDescription("自动创建");
                     DepartmentDTO departmentDTO = departmentService.insert(createDepartmentRequest);
                     userRole.setId(UUIDUtil.newUUID());
@@ -454,19 +454,19 @@ public class UserService {
             F2CException.throwException("角色不存在");
         }
         if (!RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
-            F2CException.throwException("角色不是组织管理员");
+            F2CException.throwException("角色不是公司管理员");
         }
 
         if (CollectionUtils.isEmpty(request.getCompanyIds()) && roleCommonService.isAdmin()) {
-            F2CException.throwException("组织ID列表不能为空");
+            F2CException.throwException("公司ID列表不能为空");
         }
 
         createUser(request);
 
         List<String> organizationIds = new ArrayList<>();
-        //添加组织 组织管理员只能创建当前组织管理员
+        //添加公司 公司管理员只能创建当前公司管理员
         if (roleCommonService.isAdmin()) {
-            //检验组织是否存在
+            //检验公司是否存在
             checkHasOrgIds(request.getCompanyIds());
             organizationIds.addAll(request.getCompanyIds());
         } else if (roleCommonService.isCompanyAdmin()) {
@@ -484,7 +484,7 @@ public class UserService {
         for (String orgId : list) {
             Company company = companyMapper.selectByPrimaryKey(orgId);
             if (company == null) {
-                F2CException.throwException("组织不存在，组织ID:" + orgId);
+                F2CException.throwException("公司不存在，公司ID:" + orgId);
             }
         }
     }
@@ -511,12 +511,12 @@ public class UserService {
 
         checkHasDeptIds(request.getDeptIds());
 
-        //组织管理员只能添加有权限的工作空间
+        //公司管理员只能添加有权限的工作空间
         if (roleCommonService.isCompanyAdmin()) {
             List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
             for (String workspaceId : request.getDeptIds()) {
                 if (!resourceIds.contains(workspaceId)) {
-                    F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前组织");
+                    F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前公司");
                 }
             }
         }
@@ -617,15 +617,15 @@ public class UserService {
             }
             checkHasDeptIds(request.getResourceIds());
         } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
-            //分系统管理员和组织管理员
+            //分系统管理员和公司管理员
             if (roleCommonService.isCompanyAdmin()) {
-                //组织管理员只能添加当前组织
+                //公司管理员只能添加当前公司
                 List<String> list = new ArrayList<>();
                 list.add(SessionUtils.getCompanyId());
                 request.setResourceIds(list);
             } else {
                 if (CollectionUtils.isEmpty(request.getResourceIds())) {
-                    F2CException.throwException("resourceIds不能为空(组织ID)");
+                    F2CException.throwException("resourceIds不能为空(公司ID)");
                 }
                 checkHasOrgIds(request.getResourceIds());
             }
@@ -642,7 +642,7 @@ public class UserService {
         List<String> workspaceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
         for (String workspaceId : list) {
             if (!workspaceIds.contains(workspaceId)) {
-                F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前组织");
+                F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前公司");
             }
         }
     }
@@ -710,13 +710,13 @@ public class UserService {
             checkHasDeptIds(request.getResourceIds());
         } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
             if (roleCommonService.isCompanyAdmin()) {
-                //组织管理员只能删除当前组织
+                //公司管理员只能删除当前公司
                 List<String> list = new ArrayList<>();
                 request.setResourceIds(list);
                 list.add(SessionUtils.getCompanyId());
             } else {
                 if (CollectionUtils.isEmpty(request.getResourceIds())) {
-                    F2CException.throwException("resourceIds不能为空(组织ID)");
+                    F2CException.throwException("resourceIds不能为空(公司ID)");
                 }
                 checkHasOrgIds(request.getResourceIds());
             }

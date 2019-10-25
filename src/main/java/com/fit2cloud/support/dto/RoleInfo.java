@@ -18,7 +18,7 @@ public class RoleInfo implements Serializable {
     @ApiModelProperty("公司 ID 集合")
     private List<String> companyIds;
     @ApiModelProperty("普通用户选择部门为哪一公司")
-    private String selectCompanyId;//普通用户选择工作空间为哪一个组织
+    private String selectCompanyId;//普通用户选择部门为哪一个公司
     @ApiModelProperty("部门 ID 集合")
     private List<String> deptIds;
     @ApiModelProperty("角色ID")
