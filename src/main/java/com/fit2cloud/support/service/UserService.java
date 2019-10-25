@@ -12,10 +12,10 @@ import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.service.OperationLogService;
 import com.fit2cloud.commons.server.service.RoleCommonService;
 import com.fit2cloud.commons.server.service.UserCommonService;
-import com.fit2cloud.commons.server.utils.DepartmentUtils;
 import com.fit2cloud.commons.server.utils.RoleUtils;
 import com.fit2cloud.commons.server.utils.SessionUtils;
 import com.fit2cloud.commons.server.utils.UserRoleUtils;
+import com.fit2cloud.commons.server.utils.DepartmentUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.EncryptUtils;
 import com.fit2cloud.commons.utils.ExcelExportUtils;
@@ -25,6 +25,7 @@ import com.fit2cloud.support.dao.ext.ExtUserMapper;
 import com.fit2cloud.support.dto.*;
 import com.fit2cloud.support.dto.request.*;
 import com.fit2cloud.support.dto.vo.UserAddVo;
+import com.fit2cloud.support.dto.request.CreateCompanyUserRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -44,13 +45,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-/**
- * @Author maguohao
- * @Date 2019/8/8 6:20 PM
- * @Version 1.0
- **/
 @Transactional(rollbackFor = Exception.class)
-@Service
+@Service("mcUserService")
 public class UserService {
 
     @Resource
@@ -61,6 +57,8 @@ public class UserService {
     private RoleMapper roleMapper;
     @Resource
     private UserRoleMapper userRoleMapper;
+    @Resource
+    private DepartmentService departmentService;
     @Resource
     private UserCommonService userCommonService;
     @Resource
@@ -75,8 +73,6 @@ public class UserService {
     private DepartmentMapper departmentMapper;
     @Resource
     private UserKeyMapper userKeyMapper;
-    @Resource
-    private DepartmentService departmentService;
 
     public List<UserDTO> paging(Map<String, Object> map) {
         List<UserDTO> paging = extUserMapper.paging(map);
@@ -103,7 +99,7 @@ public class UserService {
         UserRoleExample userRoleExample = new UserRoleExample();
 
         if (roleCommonService.isCompanyAdmin()) {
-            //当为公司管理员时，删除当前公司和当前公司下的工作空间（解绑关系user_role）
+            //当为组织管理员时，删除当前组织和当前组织下的工作空间（解绑关系user_role）
             List<String> list = new ArrayList<>();
             list.add(SessionUtils.getCompanyId());
             List<Department> departments = departmentService.departmentByCompanyId(SessionUtils.getCompanyId());
@@ -196,9 +192,9 @@ public class UserService {
                     );
                 }
                 if (StringUtils.equals(parentId, RoleConstants.Id.ORGADMIN.name())) {
-                    roleInfo.getCompanyIds().forEach(organizationId -> {
-                                if (!hasUserRole(userId, roleInfo.getRoleId(), organizationId)) {
-                                    insertUserRoleInfo(userRole, organizationId, null);
+                    roleInfo.getCompanyIds().forEach(companyId -> {
+                                if (!hasUserRole(userId, roleInfo.getRoleId(), companyId)) {
+                                    insertUserRoleInfo(userRole, companyId, null);
                                 }
                             }
                     );
@@ -269,9 +265,9 @@ public class UserService {
             //由于userOperate.roleInfoList 传的数据有特殊性 注意
             List<String> list = new ArrayList<>();
             list.add(SessionUtils.getCompanyId());
-            List<Department> workspaces = departmentService.departmentByCompanyId(SessionUtils.getCompanyId());
-            if (CollectionUtils.isNotEmpty(workspaces)) {
-                list.addAll(workspaces.stream().map(Department::getId).collect(Collectors.toList()));
+            List<Department> departments = departmentService.departmentByCompanyId(SessionUtils.getCompanyId());
+            if (CollectionUtils.isNotEmpty(departments)) {
+                list.addAll(departments.stream().map(Department::getId).collect(Collectors.toList()));
             }
 
             deleteCriteria.andSourceIdIn(list);
@@ -325,11 +321,11 @@ public class UserService {
                     userRole.setId(UUIDUtil.newUUID());
                     insertUserRoleInfo(userRole, departmentDTO.getId(),userOperate);
                 } else {
-                    roleInfo.getDeptIds().forEach(workspaceId -> insertUserRoleInfo(userRole, workspaceId, userOperate));
+                    roleInfo.getDeptIds().forEach(deptId -> insertUserRoleInfo(userRole, deptId, userOperate));
                 }
             }
             if (StringUtils.equals(parentId, RoleConstants.Id.ORGADMIN.name())) {
-                roleInfo.getCompanyIds().forEach(organizationId -> insertUserRoleInfo(userRole, organizationId, userOperate));
+                roleInfo.getCompanyIds().forEach(companyId -> insertUserRoleInfo(userRole, companyId, userOperate));
             }
             if (StringUtils.equals(parentId, RoleConstants.Id.ADMIN.name())) {
                 insertUserRoleInfo(userRole, null, userOperate);
@@ -348,17 +344,6 @@ public class UserService {
         userRole.setId(uuid);
         userRole.setSourceId(resourceId);
         userRoleMapper.insert(userRole);
-
-        if(StringUtils.isNotBlank(resourceId) && userOperate != null){
-            //添加导入日志
-            UserAddVo userAddVo = new UserAddVo();
-            userAddVo.setName(userOperate.getName());
-            userAddVo.setEmail(userOperate.getEmail());
-            userAddVo.setCreateTime(Instant.now().toEpochMilli());
-            userAddVo.setOrgId(resourceId);
-            userAddVo.setOrgName(departmentMapper.selectByPrimaryKey(resourceId) !=null ? departmentMapper.selectByPrimaryKey(resourceId).getName() : "");
-            extraUserService.syncExtraLog(userAddVo, "手动");
-        }
     }
 
     public Object resourceIds(String userId) {
@@ -469,7 +454,7 @@ public class UserService {
             F2CException.throwException("角色不存在");
         }
         if (!RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
-            F2CException.throwException("角色不是公司管理员");
+            F2CException.throwException("角色不是组织管理员");
         }
 
         if (CollectionUtils.isEmpty(request.getCompanyIds()) && roleCommonService.isAdmin()) {
@@ -478,33 +463,33 @@ public class UserService {
 
         createUser(request);
 
-        List<String> companyIds = new ArrayList<>();
-        //添加公司 公司管理员只能创建当前公司管理员
+        List<String> organizationIds = new ArrayList<>();
+        //添加组织 组织管理员只能创建当前组织管理员
         if (roleCommonService.isAdmin()) {
-            //检验公司是否存在
-            checkHasCompanyIds(request.getCompanyIds());
-            companyIds.addAll(request.getCompanyIds());
+            //检验组织是否存在
+            checkHasOrgIds(request.getCompanyIds());
+            organizationIds.addAll(request.getCompanyIds());
         } else if (roleCommonService.isCompanyAdmin()) {
-            companyIds.add(SessionUtils.getCompanyId());
+            organizationIds.add(SessionUtils.getCompanyId());
         }
 
-        companyIds.forEach(companyId -> addUserRole(request, companyId, request.getRoleId()));
+        organizationIds.forEach(organizationId -> addUserRole(request, organizationId, request.getRoleId()));
 
         OperationLogService.log(null, request.getId(), request.getName(), ResourceTypeConstants.USER.name(), ResourceOperation.CREATE, "");
 
         return userCommonService.getUserDTO(request.getId());
     }
 
-    private void checkHasCompanyIds(List<String> list) {
-        for (String companyId : list) {
-            Company company = companyMapper.selectByPrimaryKey(companyId);
+    private void checkHasOrgIds(List<String> list) {
+        for (String orgId : list) {
+            Company company = companyMapper.selectByPrimaryKey(orgId);
             if (company == null) {
-                F2CException.throwException("公司不存在，公司ID:" + companyId);
+                F2CException.throwException("组织不存在，组织ID:" + orgId);
             }
         }
     }
 
-    public UserDTO CreateDepartmentUser(CreateDepartmentUserRequest request) {
+    public UserDTO createDeptUser(CreateDepartmentUserRequest request) {
 
         checkCreateUserParam(request);
 
@@ -517,21 +502,21 @@ public class UserService {
             F2CException.throwException("角色不存在");
         }
         if (!RoleConstants.Id.USER.name().equalsIgnoreCase(role.getParentId())) {
-            F2CException.throwException("角色不是部门用户");
+            F2CException.throwException("角色不是工作空间用户");
         }
 
         if (CollectionUtils.isEmpty(request.getDeptIds())) {
-            F2CException.throwException("部门ID列表不能为空");
+            F2CException.throwException("工作空间ID列表不能为空");
         }
 
         checkHasDeptIds(request.getDeptIds());
 
-        //公司管理员只能添加有权限的部门
+        //组织管理员只能添加有权限的工作空间
         if (roleCommonService.isCompanyAdmin()) {
             List<String> resourceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
             for (String workspaceId : request.getDeptIds()) {
                 if (!resourceIds.contains(workspaceId)) {
-                    F2CException.throwException("部门ID[" + workspaceId + "]不属于当前公司");
+                    F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前组织");
                 }
             }
         }
@@ -539,20 +524,20 @@ public class UserService {
 
         createUser(request);
 
-        //添加部门
-        List<String> deptIds = request.getDeptIds();
+        //添加工作空间
+        List<String> workspaceIds = request.getDeptIds();
 
-        deptIds.forEach(deptId -> addUserRole(request, deptId, request.getRoleId()));
+        workspaceIds.forEach(workspaceId -> addUserRole(request, workspaceId, request.getRoleId()));
         OperationLogService.log(null, request.getId(), request.getName(), ResourceTypeConstants.USER.name(), ResourceOperation.CREATE, "");
 
         return userCommonService.getUserDTO(request.getId());
     }
 
     private void checkHasDeptIds(List<String> list) {
-        for (String deptId : list) {
-            Department department = departmentService.getDepartmentById(deptId);
+        for (String workspaceId : list) {
+            Department department = departmentService.getDepartmentById(workspaceId);
             if (department == null) {
-                F2CException.throwException("部门不存在，部门ID:" + deptId);
+                F2CException.throwException("工作空间不存在，工作空间ID:" + workspaceId);
             }
         }
     }
@@ -628,7 +613,7 @@ public class UserService {
                 F2CException.throwException("resourceIds不能为空(工作空间ID)");
             }
             if (roleCommonService.isCompanyAdmin()) {
-                checkCurrentCompanyHasDeptIds(request.getResourceIds());
+                checkCurrentOrgHasWorkspaceIds(request.getResourceIds());
             }
             checkHasDeptIds(request.getResourceIds());
         } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
@@ -640,9 +625,9 @@ public class UserService {
                 request.setResourceIds(list);
             } else {
                 if (CollectionUtils.isEmpty(request.getResourceIds())) {
-                    F2CException.throwException("resourceIds不能为空(公司ID)");
+                    F2CException.throwException("resourceIds不能为空(组织ID)");
                 }
-                checkHasCompanyIds(request.getResourceIds());
+                checkHasOrgIds(request.getResourceIds());
             }
         } else {
             request.setResourceIds(null);
@@ -653,11 +638,11 @@ public class UserService {
         return userCommonService.getUserDTO(request.getUserId());
     }
 
-    private void checkCurrentCompanyHasDeptIds(List<String> list) {
+    private void checkCurrentOrgHasWorkspaceIds(List<String> list) {
         List<String> workspaceIds = DepartmentUtils.getDeptIdsByCompanyIds(SessionUtils.getCompanyId());
         for (String workspaceId : list) {
             if (!workspaceIds.contains(workspaceId)) {
-                F2CException.throwException("部门ID[" + workspaceId + "]不属于当前公司");
+                F2CException.throwException("工作空间ID[" + workspaceId + "]不属于当前组织");
             }
         }
     }
@@ -717,10 +702,10 @@ public class UserService {
 
         if (RoleConstants.Id.USER.name().equalsIgnoreCase(role.getParentId())) {
             if (CollectionUtils.isEmpty(request.getResourceIds())) {
-                F2CException.throwException("resourceIds不能为空(部门ID)");
+                F2CException.throwException("resourceIds不能为空(工作空间ID)");
             }
             if (roleCommonService.isCompanyAdmin()) {
-                checkCurrentCompanyHasDeptIds(request.getResourceIds());
+                checkCurrentOrgHasWorkspaceIds(request.getResourceIds());
             }
             checkHasDeptIds(request.getResourceIds());
         } else if (RoleConstants.Id.ORGADMIN.name().equalsIgnoreCase(role.getParentId())) {
@@ -731,9 +716,9 @@ public class UserService {
                 list.add(SessionUtils.getCompanyId());
             } else {
                 if (CollectionUtils.isEmpty(request.getResourceIds())) {
-                    F2CException.throwException("resourceIds不能为空(公司ID)");
+                    F2CException.throwException("resourceIds不能为空(组织ID)");
                 }
-                checkHasCompanyIds(request.getResourceIds());
+                checkHasOrgIds(request.getResourceIds());
             }
         } else {
             request.setResourceIds(null);
@@ -760,16 +745,4 @@ public class UserService {
             });
         }
     }
-
-    public Object getKey(String name) {
-        List<User> userList = extUserMapper.getUserList(name);
-        String userId = userList.get(0).getId();
-        return extUserMapper.getUserKey(userId).get(0);
-    }
-
-    public List<UserKeysDTO> getAllUserKeysInfo() {
-        List<UserKeysDTO> userKeysDTOList = extUserMapper.getUserKeysDTOList();
-        return userKeysDTOList;
-    }
-
 }

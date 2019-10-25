@@ -11,6 +11,7 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="create_time" jdbcType="BIGINT" property="createTime"/>
         <result column="last_source_id" jdbcType="VARCHAR" property="lastSourceId"/>
+        <result column="company" jdbcType="VARCHAR" property="company"/>
     </resultMap>
 
     <resultMap id="RoleInfoMap" type="com.fit2cloud.support.dto.RoleInfo">
@@ -18,8 +19,8 @@
         <collection property="companyIds" ofType="java.lang.String" javaType="java.util.List">
             <result column="companyId"/>
         </collection>
-        <collection property="deptIds" ofType="java.lang.String" javaType="java.util.List">
-            <result column="deptId"/>
+        <collection property="departmentIds" ofType="java.lang.String" javaType="java.util.List">
+            <result column="departmentId"/>
         </collection>
     </resultMap>
 
@@ -28,7 +29,9 @@
         user.*,
         sum(if(role.parent_id = 'ADMIN', 100000, if(role.parent_id = 'ORGADMIN', 500, if(role.parent_id = 'USER',
         1,0)))) countFraction,
-        role.parent_id as parentId
+        role.parent_id as parentId,
+        (select name from company t join user_role t1 on t.id = t1.source_id
+        where user_id = #{map.id}) as company
         from user
         left join user_role on user.id = user_role.user_id
         left join role on role.id = user_role.role_id
@@ -74,9 +77,9 @@
     <select id="roleInfo" resultMap="RoleInfoMap">
         select role.id as roleId,
         IF(role.type = 'System', IF(role.id = 'ORGADMIN', user_role.source_id, null),
-        IF(role.parent_id = 'ORGADMIN', user_role.source_id, null)) as organizationId,
+        IF(role.parent_id = 'ORGADMIN', user_role.source_id, null)) as companyId,
         IF(role.type = 'System', IF(role.id = 'USER', user_role.source_id, null),
-        IF(role.parent_id = 'USER', user_role.source_id, null)) as deptId
+        IF(role.parent_id = 'USER', user_role.source_id, null)) as departmentId
         from user_role
         join role
         where user_role.role_id = role.id
@@ -90,25 +93,25 @@
     </select>
     <select id="resourcePaging" resultType="com.fit2cloud.commons.server.base.domain.Department">
         select
-        <if test="resourceType =='department'">
-            department.name as name,
-            department.create_time as createTime
+        <if test="resourceType =='deptartment'">
+            deptartment.name as name,
+            deptartment.create_time as createTime
         </if>
         <if test="resourceType =='company'">
             company.name as name,
             company.create_time as createTime
         </if>
         from user_role
-        <if test="resourceType =='department'">
-            join department
+        <if test="resourceType =='deptartment'">
+            join deptartment
         </if>
         <if test="resourceType =='company'">
             join company
         </if>
         where user_role.user_id = #{userId}
         and user_role.role_id = #{roleId}
-        <if test="resourceType =='department'">
-            and department.id = user_role.source_id
+        <if test="resourceType =='deptartment'">
+            and deptartment.id = user_role.source_id
         </if>
         <if test="resourceType =='company'">
             and company.id = user_role.source_id
@@ -194,27 +197,7 @@
         </where>
     </select>
 
-    <resultMap id="BaseResultMap" type="com.fit2cloud.support.dto.vo.UserKeyVo">
-        <id column="id" jdbcType="VARCHAR" property="id" />
-        <result column="user_id" jdbcType="VARCHAR" property="userId" />
-        <result column="access_key" jdbcType="VARCHAR" property="accessKey" />
-        <result column="secret_key" jdbcType="VARCHAR" property="secretKey" />
-        <result column="create_time" jdbcType="BIGINT" property="createTime" />
-        <result column="status" jdbcType="VARCHAR" property="status" />
-        <result column="role_id" jdbcType="VARCHAR" property="roleId" />
-        <result column="source_id" jdbcType="VARCHAR" property="orgId" />
-    </resultMap>
-    <select id="getUserKey" parameterType="string" resultMap="BaseResultMap">
-        select
-        t.*,t1.role_id,t1.source_id
-        from user_key t left join user_role t1 on t.user_id = t1.user_id
-        left join role t2 on t1.role_id = t2.id
-        where 1=1
-        and t2.parent_id in ('USER')
-        <if test="name != null">
-            and t.user_id = #{name}
-        </if>
-    </select>
+
 
 
 </mapper>

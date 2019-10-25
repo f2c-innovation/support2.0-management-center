@@ -34,7 +34,7 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
             {value: "姓名", key: "name", sort: false},
             {value: "邮箱", key: "email", sort: false},// 不想排序的列，用sort: false
             {value: "角色", key: "roleName", sort: false},// 不想排序的列，用sort: false
-            {value: "来源", key: "source"},
+            {value: "公司", key: "company"},
             {value: "状态", key: "active"},
             {value: "手机号码", key: "phone", sort: false},
             {value: "创建日期", key: "user.create_time"}
@@ -83,7 +83,7 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
                 $scope.isAddLineAble = true;
                 $scope.item.roleInfoList = [];
                 $scope.addLine();
-                $scope.formUrl = 'project/html/user/user-add-role.html' + '?_t=' + Math.random();
+                $scope.formUrl = 'project/html/user/user_add_role.html' + '?_t=' + Math.random();
                 $scope.toggleForm();
             }
         };
@@ -103,7 +103,7 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
             $scope.isAddLineAble = true;
             $scope.item.roleInfoList = [];
             $scope.addLine();
-            $scope.formUrl = 'project/html/user/user-add.html' + '?_t=' + Math.random();
+            $scope.formUrl = 'project/html/user/user_add.html' + '?_t=' + Math.random();
             $scope.toggleForm();
         };
 
@@ -150,10 +150,11 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
             $scope.selected = item.$$hashKey;
             $scope.showResourceInfo = {user: item};
             $scope.showInformation();
+
         };
 
         $scope.showInformation = function () {
-            $scope.infoUrl = 'project/html/user/resource-list.html' + '?_t=' + Math.random();
+            $scope.infoUrl = 'project/html/user/resource_list.html' + '?_t=' + Math.random();
             $scope.toggleInfoForm(true);
         };
 
@@ -303,16 +304,16 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
                 $scope.roles = rep.data;
             });
             if ($scope.currentRole === $scope.roleConst.orgAdmin) {
-                HttpUtils.get("organization/currentOrganization", function (rep) {
+                HttpUtils.get("company/currentCompany", function (rep) {
                     $scope.orgs = rep.data;
                 });
             } else {
-                HttpUtils.get("organization", function (rep) {
+                HttpUtils.get("company", function (rep) {
                     $scope.orgs = rep.data;
                 });
             }
 
-            HttpUtils.get("workspace", function (rep) {
+            HttpUtils.get("department", function (rep) {
                 $scope.workspaces = rep.data;
             });
         };
@@ -371,6 +372,15 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
             eyeService.view("#" + password, "#" + eye);
         };
 
+        $scope.goExtraUsers = function () {
+            $scope.item = {};
+            $scope.isAddLineAble = true;
+            $scope.item.roleInfoList = [];
+            $scope.formUrl = 'project/html/user/import_users.html' + '?_t=' + Math.random();
+            $scope.toggleForm();
+            $scope.show = true;
+        };
+
         $scope.export = function (sortObj) {
             let condition = FilterSearch.convert($scope.filters);
             if (sortObj) {
@@ -390,3 +400,167 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
         };
     }
 );
+
+
+ProjectApp.controller('ResourceController', function ($scope, HttpUtils, $http) {
+
+    $scope.columns = [
+        {value: "名称", key: "name", sort: false},
+        {value: "创建时间", key: "createTime", sort: false},
+    ];
+
+    $scope.roleTree = function () {
+        $scope.showInfoName = $scope.showResourceInfo.user.name + "的角色";
+        $scope.treeData = [];
+        $scope.noroot = {};
+        $http.get("user/switch/source/" + $scope.showResourceInfo.user.id).then(function (rep) {
+            $scope.rawData = rep.data.data;
+            angular.forEach($scope.rawData, function (data) {
+                data.collapsed = false;
+                if (data.parentId == null) {
+                    if (data.switchable) {
+                        data.name = data.name + "[" + data.desc + "]"
+                    }
+                    $scope.treeData.push(data);
+                }
+            });
+            angular.forEach($scope.treeData, function (treeData) {
+                treeData.children = [];
+                angular.forEach($scope.rawData, function (data) {
+                    if (data.parentId === treeData.id) {
+                        if (data.switchable) {
+                            data.name = data.name + "[" + data.desc + "]"
+                        }
+                        treeData.children.push(data)
+                    }
+                });
+                if (treeData.children.length === 0) {
+                    treeData.children = null;
+                }
+            })
+
+        }, function (rep) {
+
+        });
+    };
+    $scope.roleTree();
+});
+
+ProjectApp.controller('ImportExtraUserController', function ($scope, HttpUtils, FilterSearch, $http, Notification, operationArr) {
+
+    $scope.addLine();
+
+    $scope.wizard = {
+        setting: {
+            title: "标题",
+            subtitle: "子标题",
+            closeText: "取消",
+            submitText: "保存",
+            nextText: "下一步",
+            prevText: "上一步",
+        },
+        // 按顺序显示,id必须唯一并需要与页面中的id一致，select为分步初始化方法，next为下一步方法(最后一步时作为提交方法)
+        steps: [
+            {
+                id: "1",
+                name: "选择用户",
+                select: function () {
+                },
+                next: function () {
+                    let ids = [];
+                    $scope.getItemIds(ids);
+                    if (ids.length === 0) {
+                        Notification.info("请选择导入的用户！");
+                        return false
+                    } else {
+                        $scope.item.ids = ids;
+                        return true;
+                    }
+                }
+            },
+            {
+                id: "2",
+                name: "选择角色",
+                select: function () {
+                },
+                next: function () {
+                    if ($scope.item.roleInfoList.length === 1 && angular.isUndefined($scope.item.roleInfoList[0].roleId)) {
+                        Notification.warn("请选择角色！");
+                        return false;
+                    } else {
+                        $http.post("extra/user/import", $scope.item.roleInfoList, {headers: {ids: $scope.item.ids}}).then(function () {
+                            Notification.success("导入成功！");
+                            $scope.closeToggleForm();
+                            $scope.list();
+                        }, function (rep) {
+                            Notification.danger(rep.data.message);
+                        });
+                    }
+                }
+            }
+        ],
+        // 嵌入页面需要指定关闭方法
+        close: function () {
+            $scope.show = false;
+            $scope.closeToggleForm();
+        }
+    };
+
+    // 全选按钮，添加到$scope.columns
+    $scope.first = {
+        default: true,
+        sort: false,
+        type: "checkbox",
+        checkValue: false,
+        change: function (checked) {
+            $scope.items.forEach(function (item) {
+                item.enable = checked;
+            });
+        },
+        width: "40px"
+    };
+
+    $scope.getItemIds = function (ids) {
+        angular.forEach($scope.items, function (item) {
+            if (item.enable) {
+                ids.push(item.id);
+            }
+        });
+    };
+
+    $scope.clickAllCheck = function (check) {
+        $scope.items.forEach(function (item) {
+            item.enable = !check;
+        });
+    };
+
+    $scope.conditions = [
+        {key: "name", name: "ID", directive: "filter-contains"},
+        {key: "displayName", name: "姓名", directive: "filter-contains"},
+        {key: "email", name: "邮箱", directive: "filter-contains"}
+    ];
+
+    $scope.filters = [];
+    $scope.extraUsers = function (sortObj) {
+        const condition = FilterSearch.convert($scope.filters);
+        if (sortObj) {
+            $scope.sort = sortObj;
+        }
+        // 保留排序条件，用于分页
+        if ($scope.sort) {
+            condition.sort = $scope.sort.sql;
+        }
+        HttpUtils.paging($scope, "extra/user", condition, function () {
+            angular.forEach($scope.items, function (item) {
+                item.enable = false;
+            })
+        });
+    };
+
+    $scope.extraUsers();
+
+    $scope.importExtraUsers = function () {
+        $scope.formUrl = 'project/html/user/import_extra_users.html' + '?_t=' + window.appversion;
+        $scope.toggleForm();
+    };
+});

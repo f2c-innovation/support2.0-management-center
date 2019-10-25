@@ -30,7 +30,7 @@
           "title": "用户",
           "name": "user",
           "url": "/user",
-          "templateUrl": "project/html/user/user-list.html",
+          "templateUrl": "project/html/user/user_list.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",

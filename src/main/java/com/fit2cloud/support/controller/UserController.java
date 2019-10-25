@@ -6,8 +6,8 @@ import com.fit2cloud.commons.server.constants.RoleConstants;
 import com.fit2cloud.commons.server.model.ExcelExportRequest;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.service.UserKeysService;
-import com.fit2cloud.commons.server.utils.DepartmentUtils;
 import com.fit2cloud.commons.server.utils.SessionUtils;
+import com.fit2cloud.commons.server.utils.DepartmentUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.PageUtils;
 import com.fit2cloud.commons.utils.Pager;
@@ -76,18 +76,18 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @ApiOperation(value = "创建公司管理员")
+    @ApiOperation(value = "创建组织管理员")
     @PostMapping(value = "/add/company")
     @RequiresPermissions(PermissionConstants.USER_CREATE)
     public UserDTO createOrganizationUser(@RequestBody CreateCompanyUserRequest request) {
         return userService.createCompanyUser(request);
     }
 
-    @ApiOperation(value = "创建部门用户")
-    @PostMapping(value = "/add/department")
+    @ApiOperation(value = "创建工作空间用户")
+    @PostMapping(value = "/add/dept")
     @RequiresPermissions(PermissionConstants.USER_CREATE)
-    public UserDTO createWorkspaceUser(@RequestBody CreateDepartmentUserRequest request) {
-        return userService.CreateDepartmentUser(request);
+    public UserDTO createDeptUser(@RequestBody CreateDepartmentUserRequest request) {
+        return userService.createDeptUser(request);
     }
 
     @ApiOperation(value = "创建用户")
@@ -197,18 +197,5 @@ public class UserController {
                 .headers(headers)
                 .body(bytes);
     }
-
-    @ApiOperation(value = "移动端查询用户API Key")
-    @GetMapping(value = "/key/getKey/{name}")
-    public Object getKey(@PathVariable String name) {
-        return userService.getKey(name);
-    }
-
-    @ApiOperation(value = "查询所有用户API Key")
-    @GetMapping(value = "/key/list")
-    public List<UserKeysDTO> allListApiKeys() {
-        return userService.getAllUserKeysInfo();
-    }
-
 
 }
