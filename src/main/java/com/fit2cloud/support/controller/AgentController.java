@@ -1,10 +1,13 @@
 package com.fit2cloud.support.controller;
 
+import com.fit2cloud.commons.server.base.domain.Agent;
+import com.fit2cloud.commons.server.base.domain.Company;
 import com.fit2cloud.commons.utils.PageUtils;
 import com.fit2cloud.commons.utils.Pager;
 import com.fit2cloud.support.common.constants.PermissionConstants;
 import com.fit2cloud.support.dto.AgentDTO;
 import com.fit2cloud.support.dto.request.AgentRequest;
+import com.fit2cloud.support.dto.request.UpdateCompanyRequest;
 import com.fit2cloud.support.service.AgentService;
 import com.fit2cloud.support.service.UserService;
 import com.github.pagehelper.Page;
@@ -15,9 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 代理商
@@ -48,6 +49,27 @@ public class AgentController {
     public Pager<List<AgentDTO>> paging(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody AgentRequest request) {
         Page page = PageHelper.startPage(goPage, pageSize, true);
         return PageUtils.setPageInfo(page, agentService.selectBySearch(request));
+    }
+
+    @ApiOperation(value = "添加代理商")
+    @PostMapping("/add")
+    @RequiresPermissions(PermissionConstants.AGENT_CREATE)
+    public Agent insert(@RequestBody Agent agent) {
+        return agentService.insert(agent);
+    }
+
+    @ApiOperation(value = "编辑代理商")
+    @PostMapping("/update")
+    @RequiresPermissions(PermissionConstants.AGENT_EDIT)
+    public Agent update(@RequestBody Agent agent) {
+        return agentService.update(agent);
+    }
+
+    @ApiOperation(value = "删除代理商")
+    @GetMapping(value = "/delete/{agentId}")
+    @RequiresPermissions(PermissionConstants.AGENT_DELETE)
+    public void delete(@PathVariable String agentId) {
+        agentService.delete(agentId);
     }
 
 }

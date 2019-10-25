@@ -45,12 +45,12 @@ ProjectApp.controller('agentController', function ($scope, HttpUtils, FilterSear
     };
 
     $scope.columns = [
-        $scope.first,
         {value: "名称", key: "name", sort: false},
-        {value: "部门", key: "countDept"},// 不想排序的列，用sort: false
-        {value: "公司管理员", key: "countCompanyAdmin"},// 不想排序的列，用sort: false
-        {value: "公司邮箱", key: "email"},
+        {value: "关联客户", key: "companyCount"},// 不想排序的列，用sort: false
+        {value: "订阅", key: "subscriptionCount"},// 不想排序的列，用sort: false
+        {value: "用户", key: "userCount"},
         {value: "创建时间", key: "create_time"},
+        {value: "操作", key: "operate"}
     ];
 
     $scope.list = function (sortObj) {

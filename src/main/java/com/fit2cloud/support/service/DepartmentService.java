@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class DepartmentService {
 
     @Resource
@@ -66,7 +67,6 @@ public class DepartmentService {
         return departmentMapper.selectByExample(example);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public DepartmentDTO insert(CreateDepartmentRequest request) {
 
 
@@ -109,7 +109,6 @@ public class DepartmentService {
         return getDepartmentDTOById(deptId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public DepartmentDTO update(UpdateDepartmentRequest request) {
 
         if (StringUtils.isBlank(request.getId())) {
@@ -152,7 +151,6 @@ public class DepartmentService {
     }
 
 
-    @Transactional(rollbackFor = Exception.class)
     public void delete(String workspaceId) {
         // delete be linked user_role
         UserRoleExample example = new UserRoleExample();
