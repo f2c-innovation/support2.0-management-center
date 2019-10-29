@@ -33,4 +33,10 @@
             </if>
         </where>
     </select>
+
+    <select id="getByCompanyId" resultMap="CompanyDtoMap">
+        select company.*
+        from company
+        where company.is_delete = FALSE and company.id = #{companyId}
+    </select>
 </mapper>

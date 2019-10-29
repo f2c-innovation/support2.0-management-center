@@ -162,7 +162,7 @@ ProjectApp.controller('companyController', function ($scope, HttpUtils, FilterSe
         $scope.toggleInfoForm(false);
     };
 
-    $scope.filterAgent = function (agent, item) {
+    $scope.filterAgent = function (agentList, item) {
         let value = true;
         if (item.selects.length === 0) {
             value = true;

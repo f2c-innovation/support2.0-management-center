@@ -9,4 +9,6 @@ import java.util.Map;
 
 public interface ExtCompanyMapper {
     List<CompanyDTO> paging(CompanyRequest request);
+
+    CompanyDTO getByCompanyId(@Param("companyId") String companyId);
 }

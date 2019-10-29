@@ -5,9 +5,7 @@ import com.fit2cloud.commons.server.base.domain.Department;
 import com.fit2cloud.commons.server.model.SessionUser;
 import com.fit2cloud.commons.server.model.UserDTO;
 import com.fit2cloud.commons.server.utils.SessionUtils;
-import com.fit2cloud.commons.utils.BeanUtils;
-import com.fit2cloud.commons.utils.PageUtils;
-import com.fit2cloud.commons.utils.Pager;
+import com.fit2cloud.commons.utils.*;
 import com.fit2cloud.support.common.constants.PermissionConstants;
 import com.fit2cloud.support.dto.CompanyDTO;
 import com.fit2cloud.support.dto.request.CompanyRequest;
@@ -74,22 +72,38 @@ public class CompanyController {
     @ApiOperation(value = "批量删除公司")
     @PostMapping(value = "/delete")
     @RequiresPermissions(PermissionConstants.COMPANY_DELETE)
-    public void delete(@RequestBody List<String> companyIds) {
-        companyService.delete(companyIds);
+    public Object delete(@RequestBody List<String> companyIds) {
+        try {
+            companyService.delete(companyIds);
+            return ResultHolder.success(null);
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "创建公司")
     @PostMapping("/add")
     @RequiresPermissions(PermissionConstants.COMPANY_CREATE)
-    public Company insert(@RequestBody CreateCompanyRequest request) {
-        return companyService.insert(request);
+    public Object insert(@RequestBody CreateCompanyRequest request) {
+        try {
+            return ResultHolder.success(companyService.insert(request));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "编辑公司")
     @PostMapping("/update")
     @RequiresPermissions(PermissionConstants.COMPANY_EDIT)
-    public Company update(@RequestBody UpdateCompanyRequest request) {
-        return companyService.update(request);
+    public Object update(@RequestBody UpdateCompanyRequest request) {
+        try {
+            return companyService.update(request);
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
     }
 
 }

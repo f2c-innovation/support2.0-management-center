@@ -1,9 +1,7 @@
 package com.fit2cloud.support.service;
 
-import com.fit2cloud.commons.server.base.domain.Company;
-import com.fit2cloud.commons.server.base.domain.CompanyExample;
-import com.fit2cloud.commons.server.base.domain.Department;
-import com.fit2cloud.commons.server.base.domain.DepartmentExample;
+import com.fit2cloud.commons.server.base.domain.*;
+import com.fit2cloud.commons.server.base.mapper.AgentCompanyMapper;
 import com.fit2cloud.commons.server.base.mapper.CompanyMapper;
 import com.fit2cloud.commons.server.base.mapper.DepartmentMapper;
 import com.fit2cloud.commons.server.constants.ResourceOperation;
@@ -18,6 +16,7 @@ import com.fit2cloud.commons.server.utils.UserRoleUtils;
 import com.fit2cloud.commons.utils.BeanUtils;
 import com.fit2cloud.commons.utils.UUIDUtil;
 import com.fit2cloud.support.common.constants.MessageConstants;
+import com.fit2cloud.support.dao.ext.ExtAgentCompanyMapper;
 import com.fit2cloud.support.dao.ext.ExtCompanyMapper;
 import com.fit2cloud.support.dao.ext.ExtDepartmentMapper;
 import com.fit2cloud.support.dto.CompanyDTO;
@@ -46,6 +45,10 @@ public class CompanyService {
     private DepartmentMapper departmentMapper;
     @Resource
     private ExtDepartmentMapper extDepartmentMapper;
+    @Resource
+    private AgentCompanyMapper agentCompanyMapper;
+    @Resource
+    private ExtAgentCompanyMapper extAgentCompanyMapper;
     @Autowired
     private UserService userService;
 
@@ -63,7 +66,6 @@ public class CompanyService {
         return extCompanyMapper.paging(request);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public void delete(List<String> companyIds) {
         DepartmentExample countExample = new DepartmentExample();
         countExample.createCriteria().andCompanyIdIn(companyIds);
@@ -73,11 +75,11 @@ public class CompanyService {
         }
         companyIds.forEach(companyId -> {
             companyMapper.deleteByPrimaryKey(companyId);
+            extAgentCompanyMapper.deleteByCompanyId(companyId);
             OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.DELETE, null);
         });
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public Company insert(CreateCompanyRequest request) {
         if (StringUtils.isBlank(request.getName())) {
             F2CException.throwException("公司名称不能为空");
@@ -86,8 +88,18 @@ public class CompanyService {
         BeanUtils.copyBean(company, request);
         company.setId(UUIDUtil.newUUID());
         company.setCreateTime(Instant.now().toEpochMilli());
+
+        List<String> agentIdList = request.getAgentIdList();
         try {
-            companyMapper.insert(company);
+            companyMapper.insertSelective(company);
+            for(String agentId : request.getAgentIdList()){
+                AgentCompany agentCompany = new AgentCompany();
+                agentCompany.setId(UUIDUtil.newUUID());
+                agentCompany.setCompanyId(company.getId());
+                agentCompany.setAgentId(agentId);
+                agentCompany.setCreateTime(Instant.now().toEpochMilli());
+                agentCompanyMapper.insertSelective(agentCompany);
+            }
             OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.CREATE, null);
         } catch (DuplicateKeyException e) {
             F2CException.throwException(MessageConstants.NameDuplicateKey);
@@ -95,7 +107,6 @@ public class CompanyService {
         return company;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public Company update(UpdateCompanyRequest request) {
         if (StringUtils.isBlank(request.getId())) {
             F2CException.throwException("ID不能为空");
@@ -107,6 +118,15 @@ public class CompanyService {
         BeanUtils.copyBean(company, request);
         try {
             companyMapper.updateByPrimaryKeySelective(company);
+            extAgentCompanyMapper.deleteByCompanyId(company.getId());
+            request.getAgentIdList().forEach(agentId -> {
+                AgentCompany agentCompany = new AgentCompany();
+                agentCompany.setId(UUIDUtil.newUUID());
+                agentCompany.setAgentId(agentId);
+                agentCompany.setCompanyId(company.getId());
+                agentCompany.setCreateTime(Instant.now().toEpochMilli());
+                agentCompanyMapper.insertSelective(agentCompany);
+            });
             OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.UPDATE, null);
         } catch (DuplicateKeyException e) {
             F2CException.throwException(MessageConstants.NameDuplicateKey);

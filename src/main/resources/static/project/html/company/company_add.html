@@ -19,7 +19,7 @@
 
         <md-input-container class="md-block" layout-gt-xs="row">
             <label>代理商</label>
-            <md-select name="agentId" ng-model="item.agentId" multiple required>
+            <md-select name="agentIdList" ng-model="item.agentIdList" multiple required>
                 <md-option ng-value="agent.id"
                            ng-repeat="agent in agentList">
                     {{agent.name}}
@@ -38,7 +38,7 @@
 
         <md-input-container class="md-block" flex-gt-sm>
             <label>邮箱</label>
-            <input md-maxlength="50" name="email" ng-model="item.email">
+            <input md-maxlength="50" name="email" ng-model="item.email" required>
             <div ng-messages="companyFrom.email.$error">
                 <div ng-message="required">必填.</div>
                 <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
@@ -49,7 +49,7 @@
 
         <md-input-container class="md-block" flex-gt-sm>
             <label>联系电话</label>
-            <input md-maxlength="50" name="phone" ng-model="item.phone">
+            <input md-maxlength="50" name="phone" ng-model="item.phone" required>
             <div ng-messages="companyFrom.phone.$error">
                 <div ng-message="required">必填.</div>
                 <div ng-message="pattern">请填写正确的手机号码.</div>
@@ -58,7 +58,7 @@
 
         <md-input-container class="md-block" flex-gt-sm>
             <label>地址</label>
-            <input md-maxlength="50" name="address" ng-model="item.address">
+            <input md-maxlength="50" name="address" ng-model="item.address" required>
             <div ng-messages="companyFrom.address.$error">
                 <div ng-message="required">必填.</div>
                 <div ng-message="md-maxlength">不要超过50个字符</div>
@@ -67,7 +67,7 @@
 
         <md-input-container class="md-block" flex-gt-sm>
             <label>描述</label>
-            <input md-maxlength="50" name="content" ng-model="item.content">
+            <input md-maxlength="50" name="content" ng-model="item.content" >
             <div ng-messages="companyFrom.content.$error">
                 <div ng-message="md-maxlength">不要超过50个字符</div>
             </div>

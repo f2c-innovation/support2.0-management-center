@@ -4,11 +4,11 @@
             <div>编辑公司</div>
         </div>
     </md-toolbar>
-    <form name="organizationFrom" class="md-padding">
+    <form name="companyFrom" class="md-padding">
         <md-input-container class="md-block" flex-gt-sm>
             <label>名称</label>
             <input minlength="2" md-maxlength="30" required name="name" ng-model="item.name">
-            <div ng-messages="organizationFrom.name.$error">
+            <div ng-messages="companyFrom.name.$error">
                 <div ng-message="required">必填.</div>
                 <div ng-message="md-maxlength">不要超过30个字符</div>
                 <div ng-message-exp="['required', 'minlength', 'maxlength']">
@@ -17,10 +17,58 @@
             </div>
         </md-input-container>
 
+        <md-input-container class="md-block" layout-gt-xs="row">
+            <label>代理商</label>
+            <md-select name="agentIdList" ng-model="item.agentIdList" multiple required>
+                <md-option ng-value="agentIdList.id"
+                           ng-repeat="agent in agentList">
+                    {{agent.name}}
+                </md-option>
+            </md-select>
+            <div ng-messages="companyFrom.agentId.$error">
+                <div ng-message="required">必填.</div>
+            </div>
+            <md-icon style="cursor:pointer;"
+                     ng-if="agentList.length>1"
+                     ng-click="filterAgent(agent,item)">clear
+            </md-icon>
+            <md-icon ng-if="agentList.length <= 1">
+            </md-icon>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>邮箱</label>
+            <input md-maxlength="50" name="email" ng-model="item.email" required>
+            <div ng-messages="companyFrom.email.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                    邮件必须符合邮件格式，并且在10-100字符以内
+                </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>联系电话</label>
+            <input md-maxlength="50" name="phone" ng-model="item.phone" required>
+            <div ng-messages="companyFrom.phone.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="pattern">请填写正确的手机号码.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>地址</label>
+            <input md-maxlength="50" name="address" ng-model="item.address" required>
+            <div ng-messages="companyFrom.address.$error">
+                <div ng-message="required">必填.</div>
+                <div ng-message="md-maxlength">不要超过50个字符</div>
+            </div>
+        </md-input-container>
+
         <md-input-container class="md-block" flex-gt-sm>
             <label>描述</label>
-            <input md-maxlength="50" name="description" ng-model="item.description">
-            <div ng-messages="organizationFrom.description.$error">
+            <input md-maxlength="50" name="content" ng-model="item.content">
+            <div ng-messages="companyFrom.content.$error">
                 <div ng-message="md-maxlength">不要超过50个字符</div>
             </div>
         </md-input-container>

@@ -1,16 +1,12 @@
 package com.fit2cloud.support.dto;
 
-
 import com.fit2cloud.support.model.Agent;
 import com.fit2cloud.support.model.AgentCompany;
 
-/**
- * create by mgh 2019.10.23
- */
 public class AgentCompanyDTO extends AgentCompany {
 
     private Agent agent;
-    private CompanyDTO companyDto;
+    private CompanyDTO companyDTO;
     private int countLinkman;
 
     public Agent getAgent() {
@@ -21,12 +17,12 @@ public class AgentCompanyDTO extends AgentCompany {
         this.agent = agent;
     }
 
-    public CompanyDTO getCompanyDto() {
-        return companyDto;
+    public CompanyDTO getCompanyDTO() {
+        return companyDTO;
     }
 
-    public void setCompanyDto(CompanyDTO companyDto) {
-        this.companyDto = companyDto;
+    public void setCompanyDTO(CompanyDTO companyDTO) {
+        this.companyDTO = companyDTO;
     }
 
     public int getCountLinkman() {
