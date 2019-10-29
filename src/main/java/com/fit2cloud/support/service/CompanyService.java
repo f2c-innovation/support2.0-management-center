@@ -86,8 +86,7 @@ public class CompanyService {
         }
         Company company = new Company();
         BeanUtils.copyBean(company, request);
-        company.setId(UUIDUtil.newUUID());
-        company.setCreateTime(Instant.now().toEpochMilli());
+        this.setValue(company);
 
         List<String> agentIdList = request.getAgentIdList();
         try {
@@ -103,6 +102,19 @@ public class CompanyService {
             OperationLogService.log(null, null, SessionUtils.getUser().getId(), SessionUtils.getUser().getName(), ResourceOperation.CREATE, null);
         } catch (DuplicateKeyException e) {
             F2CException.throwException(MessageConstants.NameDuplicateKey);
+        }
+        return company;
+    }
+
+    public Company setValue(Company company){
+        company.setId(UUIDUtil.newUUID());
+        company.setCreateTime(Instant.now().toEpochMilli());
+        company.setIsDelete(false);
+        company.setIsOwn(false);
+        if(SessionUtils.getUser().getName().equalsIgnoreCase("admin")){
+            company.setType("root");
+        }else{
+            company.setType(SessionUtils.getUser().getId());
         }
         return company;
     }

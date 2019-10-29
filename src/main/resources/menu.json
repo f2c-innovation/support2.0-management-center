@@ -152,22 +152,6 @@
       "children": [
         {
           "order": 1,
-          "title": "系统设置",
-          "name": "system_param_list",
-          "url": "/system_param_list",
-          "templateUrl": "project/html/system/system_param_list.html",
-          "requiredPermissions": [
-            {
-              "role": "ADMIN",
-              "logical": "OR",
-              "permissions": [
-                "SYSTEM:OPRATE"
-              ]
-            }
-          ]
-        },
-        {
-          "order": 2,
           "title": "字典管理",
           "name": "category",
           "url": "/category",
@@ -184,7 +168,7 @@
         },
         {
           "id": "price-setting",
-          "order": 3,
+          "order": 2,
           "title": "服务商设置",
           "name": "provider_setting",
           "url": "/provider_setting",
@@ -200,7 +184,7 @@
           ]
         },
         {
-          "order": 4,
+          "order": 3,
           "title": "服务等级",
           "name": "grade_service",
           "url": "/grade_service",
@@ -216,7 +200,7 @@
           ]
         },
         {
-          "order": 5,
+          "order": 4,
           "title": "流程管理",
           "name": "process_management",
           "url": "/process_management",
@@ -232,7 +216,7 @@
           ]
         },
         {
-          "order": 6,
+          "order": 5,
           "title": "公告管理",
           "name": "notice_management",
           "url": "/notice_management",
