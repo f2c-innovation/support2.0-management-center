@@ -155,13 +155,26 @@
           "title": "字典管理",
           "name": "category",
           "url": "/category",
-          "templateUrl": "project/html/system/category.html",
+          "templateUrl": "project/html/system/dictionary/category.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "SYSTEM:OPRATE"
+                "DICTIONARY:READ",
+                "DICTIONARY:READ+CREATE",
+                "DICTIONARY:READ+EDIT",
+                "DICTIONARY:READ+DELETE"
+              ]
+            },
+            {
+              "role": "ORGADMIN",
+              "logical": "OR",
+              "permissions": [
+                "DICTIONARY:READ",
+                "DICTIONARY:READ+CREATE",
+                "DICTIONARY:READ+EDIT",
+                "DICTIONARY:READ+DELETE"
               ]
             }
           ]

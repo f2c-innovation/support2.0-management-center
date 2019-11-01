@@ -45,15 +45,15 @@ public class PermissionConstants {
     //end  agent相关权限
 
     // start 标签相关权限
-    public static final String TAG_READ = "TAG:READ";
-    public static final String TAG_CREATE = "TAG:READ+CREATE";
-    public static final String TAG_EDIT = "TAG:READ+EDIT";
-    public static final String TAG_DELETE = "TAG:READ+DELETE";
-    public static final String TAG_VALUE_READ = "TAG:READ+TAG_VALUE:READ";
-    public static final String TAG_VALUE_CREATE = "TAG:READ+TAG_VALUE:READ+CREATE";
-    public static final String TAG_VALUE_EDIT = "TAG:READ+TAG_VALUE:READ+EDIT";
-    public static final String TAG_VALUE_DELETE = "TAG:READ+TAG_VALUE:READ+DELETE";
-    public static final String TAG_VALUE_IMPORT = "TAG:READ+TAG_VALUE:READ+IMPORT";
+    public static final String DICTIONARY_READ = "DICTIONARY:READ";
+    public static final String DICTIONARY_CREATE = "DICTIONARY:READ+CREATE";
+    public static final String DICTIONARY_EDIT = "DICTIONARY:READ+EDIT";
+    public static final String DICTIONARY_DELETE = "DICTIONARY:READ+DELETE";
+    public static final String DICTIONARY_VALUE_READ = "DICTIONARY:READ+DICTIONARY_VALUE:READ";
+    public static final String DICTIONARY_VALUE_CREATE = "DICTIONARY:READ+DICTIONARY_VALUE:READ+CREATE";
+    public static final String DICTIONARY_VALUE_EDIT = "DICTIONARY:READ+DICTIONARY_VALUE:READ+EDIT";
+    public static final String DICTIONARY_VALUE_DELETE = "DICTIONARY:READ+DICTIONARY_VALUE:READ+DELETE";
+    public static final String DICTIONARY_VALUE_IMPORT = "DICTIONARY:READ+DICTIONARY_VALUE:READ+IMPORT";
     // end 标签相关权限
 
     //start 插件管理

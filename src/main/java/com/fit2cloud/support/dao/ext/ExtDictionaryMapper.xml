@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fit2cloud.support.dao.ext.ExtDictionaryMapper">
+
+    <select id="getCategoryList" resultType="com.fit2cloud.commons.server.base.domain.Category" parameterType="com.fit2cloud.commons.server.base.domain.Category">
+        select
+            *
+        from category
+        <where>
+            <if test="id!=null">
+                and category.id = #{id}
+            </if>
+            <if test="name!=null">
+                and category.name like #{name}
+            </if>
+            <if test="status!=null">
+                and category.status like #{status}
+            </if>
+            <if test="sort!=null">
+                order by ${sort}
+            </if>
+        </where>
+    </select>
+    <select id="getDictionaryList" resultType="com.fit2cloud.commons.server.base.domain.Dictionary" parameterType="com.fit2cloud.commons.server.base.domain.Dictionary">
+        select
+        *
+        from dictionary
+        <where>
+            <if test="id!=null">
+                and dictionary.id = #{id}
+            </if>
+            <if test="categoryId!=null">
+                and dictionary.category_id like #{categoryId}
+            </if>
+            <if test="dictionaryKey!=null">
+                and dictionary.dictionary_key like #{dictionaryKey}
+            </if>
+            <if test="dictionaryValue!=null">
+                and dictionary.dictionary_value like #{dictionaryValue}
+            </if>
+            <if test="status!=null">
+                and dictionary.status like #{status}
+            </if>
+            <if test="sort!=null">
+                order by ${sort}
+            </if>
+        </where>
+    </select>
+
+</mapper>

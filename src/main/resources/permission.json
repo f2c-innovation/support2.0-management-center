@@ -219,6 +219,41 @@
       ]
     },
     {
+      "id": "DICTIONARY:READ",
+      "name": "查看字典",
+      "resourceId": "DICTIONARY",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN",
+        "USER",
+        "other"
+      ]
+    },
+    {
+      "id": "DICTIONARY:READ+CREATE",
+      "name": "创建字典",
+      "resourceId": "DICTIONARY",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "DICTIONARY:READ+EDIT",
+      "name": "编辑字典",
+      "resourceId": "DICTIONARY",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "DICTIONARY:READ+DELETE",
+      "name": "删除字典",
+      "resourceId": "DICTIONARY",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
       "id": "SYSTEM:OPRATE",
       "name": "系统管理",
       "resourceId": "SYSTEM",
@@ -251,6 +286,10 @@
     {
       "id": "AGENT",
       "name": "代理商"
+    },
+    {
+      "id": "DICTIONARY",
+      "name": "字典"
     },
     {
       "id": "SYSTEM",
