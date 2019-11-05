@@ -2,11 +2,11 @@ package com.fit2cloud.support.controller;
 
 import com.fit2cloud.commons.server.base.domain.Category;
 import com.fit2cloud.commons.server.base.domain.Dictionary;
+import com.fit2cloud.commons.utils.LogUtil;
 import com.fit2cloud.commons.utils.PageUtils;
 import com.fit2cloud.commons.utils.Pager;
+import com.fit2cloud.commons.utils.ResultHolder;
 import com.fit2cloud.support.common.constants.PermissionConstants;
-import com.fit2cloud.support.dto.CompanyDTO;
-import com.fit2cloud.support.dto.request.CompanyRequest;
 import com.fit2cloud.support.service.DictionaryService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -40,6 +40,30 @@ public class DictionaryController {
     public Pager<List<Dictionary>> getDictionaryList(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody Dictionary request) {
         Page page = PageHelper.startPage(goPage, pageSize, true);
         return PageUtils.setPageInfo(page, dictionaryService.getDictionaryList(request));
+    }
+
+    @ApiOperation(value = "删除一级字典")
+    @PostMapping(value = "/delete/category/{id}")
+    @RequiresPermissions(PermissionConstants.DICTIONARY_DELETE)
+    public Object deleteCategory(@PathVariable String id) {
+        try {
+            return ResultHolder.success(dictionaryService.deleteCategory(id));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "删除二级字典")
+    @PostMapping(value = "/delete/dictionary/{id}")
+    @RequiresPermissions(PermissionConstants.DICTIONARY_DELETE)
+    public Object deleteDictionary(@PathVariable String id) {
+        try {
+            return ResultHolder.success(dictionaryService.deleteDictionary(id));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
     }
 
 }

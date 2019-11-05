@@ -155,7 +155,7 @@
           "title": "字典管理",
           "name": "category",
           "url": "/category",
-          "templateUrl": "project/html/system/dictionary/category.html",
+          "templateUrl": "project/html/system/dictionary/category_list.html",
           "requiredPermissions": [
             {
               "role": "ADMIN",

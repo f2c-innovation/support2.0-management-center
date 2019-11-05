@@ -46,14 +46,9 @@ public class PermissionConstants {
 
     // start 标签相关权限
     public static final String DICTIONARY_READ = "DICTIONARY:READ";
-    public static final String DICTIONARY_CREATE = "DICTIONARY:READ+CREATE";
-    public static final String DICTIONARY_EDIT = "DICTIONARY:READ+EDIT";
-    public static final String DICTIONARY_DELETE = "DICTIONARY:READ+DELETE";
-    public static final String DICTIONARY_VALUE_READ = "DICTIONARY:READ+DICTIONARY_VALUE:READ";
-    public static final String DICTIONARY_VALUE_CREATE = "DICTIONARY:READ+DICTIONARY_VALUE:READ+CREATE";
-    public static final String DICTIONARY_VALUE_EDIT = "DICTIONARY:READ+DICTIONARY_VALUE:READ+EDIT";
-    public static final String DICTIONARY_VALUE_DELETE = "DICTIONARY:READ+DICTIONARY_VALUE:READ+DELETE";
-    public static final String DICTIONARY_VALUE_IMPORT = "DICTIONARY:READ+DICTIONARY_VALUE:READ+IMPORT";
+    public static final String DICTIONARY_CREATE = "DICTIONARY:CREATE";
+    public static final String DICTIONARY_EDIT = "DICTIONARY:EDIT";
+    public static final String DICTIONARY_DELETE = "DICTIONARY:DELETE";
     // end 标签相关权限
 
     //start 插件管理

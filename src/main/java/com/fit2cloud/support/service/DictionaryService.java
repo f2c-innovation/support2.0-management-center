@@ -28,4 +28,12 @@ public class DictionaryService {
         return extDictionaryMapper.getDictionaryList(dictionary);
     }
 
+    public Object deleteCategory(String id) {
+        return extDictionaryMapper.updateCategory(id);
+    }
+
+    public Object deleteDictionary(String id) {
+        return extDictionaryMapper.updateDictionary(id);
+    }
+
 }

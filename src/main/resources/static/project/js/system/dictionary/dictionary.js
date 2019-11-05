@@ -1,4 +1,4 @@
-ProjectApp.controller('dictionaryController', function ($scope, $mdDialog, $document, $state, $stateParams, HttpUtils, FilterSearch, Notification, AuthService) {
+ProjectApp.controller('categoryController', function ($scope, $mdDialog, $document, $state, $stateParams, HttpUtils, FilterSearch, Notification, AuthService) {
     $scope.dictionaryParam = $stateParams.dictionaryParam ? $stateParams.dictionaryParam : angular.fromJson(sessionStorage.getItem("dictionaryParam")) || {};
     sessionStorage.removeItem("dictionaryParam");
 
@@ -12,7 +12,6 @@ ProjectApp.controller('dictionaryController', function ($scope, $mdDialog, $docu
     // 全选按钮，添加到$scope.columns
     $scope.first = {
         default: true,
-        sort: false,
         type: "checkbox",
         checkValue: false,
         change: function (checked) {
@@ -28,13 +27,13 @@ ProjectApp.controller('dictionaryController', function ($scope, $mdDialog, $docu
     };
 
     $scope.columns = [
-        {value: "标签", key: "id", width: "30%"},
-        {value: "别名", key: "name"},
-        // {value: "类别", key: "dictionary_type"},
-        {value: "是否启用", key: "status"}// 不想排序的列，用sort: false
+        {value: "分组标识", key: "id"},
+        {value: "分组别名", key: "name"},
+        {value: "状态", key: "status"},// 不想排序的列，用sort: false
+        {value: "操作", key: "operate"}
     ];
-    if (AuthService.hasPermissions("DICTIONARY:READ+UPGRADE,DICTIONARY:READ+DELETE,DICTIONARY:READ+DICTIONARY_VALUE:READ")) {
-        $scope.columns.push({value: "", default: true, sort: false});
+    if (AuthService.hasPermissions("DICTIONARY:READ+EDIT,DICTIONARY:READ+DELETE,DICTIONARY:READ")) {
+        $scope.columns.push({value: "", default: true});
     }
 
     $scope.editDictionaryForm = function (item) {
@@ -83,17 +82,7 @@ ProjectApp.controller('dictionaryController', function ($scope, $mdDialog, $docu
 
     $scope.list = function (sortObj, page, limit) {
         var condition = FilterSearch.convert($scope.filters);
-        if (sortObj) {
-            $scope.sort = sortObj;
-        } else {
-            $scope.sort = {sql: 'dictionary_key asc'};
-        }
-        // 保留排序条件，用于分页
-        if ($scope.sort) {
-            condition.sort = $scope.sort.sql;
-        }
-
-        HttpUtils.paging($scope, 'dictionary/list', condition)
+        HttpUtils.paging($scope, 'dictionary/category', condition)
     };
 
     $scope.list();
@@ -165,11 +154,6 @@ ProjectApp.controller('DictionaryValuesController', function ($scope, $mdDialog,
             Notification.success(message);
             $scope.toggleForm();
         });
-    };
-
-    $scope.import = function () {
-        $scope.formUrl = 'project/html/dictionary/dictionary-value-import.html' + '?_t=' + Math.random();
-        $scope.toggleForm();
     };
 
     $scope.uploadFile = function (file, isClear) {

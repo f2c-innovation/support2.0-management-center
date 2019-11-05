@@ -1,0 +1,65 @@
+<div layout-fill ng-controller="categoryController" class="content-backdrop" ng-cloak>
+    <div cg-busy="{promise:loadingLayer,minDuration:500}" layout="column" layout-fill>
+        <md-toolbar class="content-toolbar">
+            <div class="md-toolbar-tools">
+                <div>一级字典管理</div>
+                <md-button class="md-primary" ng-click="addForm({})" has-permission="DICTIONARY:READ+CREATE">
+                    <md-icon>add_circle_outline</md-icon>
+                    创建</md-button>
+            </div>
+        </md-toolbar>
+        <div layout="row" flex>
+            <div class="md-padding" layout="column" flex="100">
+
+                <filter-tools conditions="conditions" results="filters" search="'true'" execute="list()">
+                    <select-columns columns="columns"></select-columns>
+                    <div class="filter-item">
+                        <md-button class="md-icon-button md-whiteframe-1dp" ng-click="list()">
+                            <md-tooltip md-delay="300">刷新</md-tooltip>
+                            <md-icon>refresh</md-icon>
+                        </md-button>
+                    </div>
+                </filter-tools>
+                <div flex layout="column" layout-fill>
+                    <table dynamic-table columns="columns">
+                        <tbody>
+                        <tr ng-repeat="item in items">
+                            <td><a class="md-primary" href="" style="cursor:pointer; text-decoration: underline;"
+                                   ng-click="editValues(item)" has-permission="DICTIONARY:READ">
+                                {{item.id}}</a>
+                            </td>
+                            <td>{{item.name}}</td>
+                            <td>
+                                <md-switch class="md-primary" aria-label="status" ng-model="item.status"
+                                           ng-change="editTagStatus(item)"
+                                           has-permission="DICTIONARY:READ+EDIT">
+                                </md-switch>
+                                <span lack-permission="DICTIONARY:READ+EDIT">{{item.status}}</span>
+                            </td>
+                            <td has-permissions="DICTIONARY:READ+DELETE,DICTIONARY:READ+EDIT,DICTIONARY:READ">
+                                <!--设置名成加op="'其他名称'"，默认的名称为"操作"；设置宽度加width="4 或其他整数"-->
+                                <table-menus>
+                                    <md-menu-item has-permission="DICTIONARY:READ+EDIT">
+                                        <md-button ng-click="editTagForm(item)">
+                                            <md-icon class="md-18">edit</md-icon>
+                                            编辑
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item has-permission="DICTIONARY:READ+DELETE">
+                                        <md-button ng-click="deleteTag(item)">
+                                            <md-icon>delete</md-icon>
+                                            删除
+                                        </md-button>
+                                    </md-menu-item>
+                                </table-menus>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table-pagination pagination="pagination"></table-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <side-form></side-form>
+</div>

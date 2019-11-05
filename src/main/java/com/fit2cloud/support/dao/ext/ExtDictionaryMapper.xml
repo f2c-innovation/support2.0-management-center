@@ -16,9 +16,6 @@
             <if test="status!=null">
                 and category.status like #{status}
             </if>
-            <if test="sort!=null">
-                order by ${sort}
-            </if>
         </where>
     </select>
     <select id="getDictionaryList" resultType="com.fit2cloud.commons.server.base.domain.Dictionary" parameterType="com.fit2cloud.commons.server.base.domain.Dictionary">
@@ -30,6 +27,7 @@
                 and dictionary.id = #{id}
             </if>
             <if test="categoryId!=null">
+
                 and dictionary.category_id like #{categoryId}
             </if>
             <if test="dictionaryKey!=null">
@@ -41,10 +39,22 @@
             <if test="status!=null">
                 and dictionary.status like #{status}
             </if>
-            <if test="sort!=null">
-                order by ${sort}
-            </if>
         </where>
     </select>
 
+    <update id="updateCategory">
+        update category
+        set category.status = #{status}
+        <where>
+            category.id = #{id}
+        </where>
+    </update>
+
+    <update id="updateDictionary">
+        update dictionary
+        set dictionary.status = #{status}
+        <where>
+            category.id = #{id}
+        </where>
+    </update>
 </mapper>
