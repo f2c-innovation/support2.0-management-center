@@ -42,8 +42,44 @@ public class DictionaryController {
         return PageUtils.setPageInfo(page, dictionaryService.getDictionaryList(request));
     }
 
+    @ApiOperation(value = "添加一级字典")
+    @PostMapping(value = "/category/add")
+    @RequiresPermissions(PermissionConstants.DICTIONARY_CREATE)
+    public Object addCategory(@RequestBody Category category) {
+        try {
+            return ResultHolder.success(dictionaryService.addCategory(category));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "编辑一级字典")
+    @PostMapping(value = "/category/update")
+    @RequiresPermissions(PermissionConstants.DICTIONARY_EDIT)
+    public Object updateCategory(@RequestBody Category category) {
+        try {
+            return ResultHolder.success(dictionaryService.updateCategory(category));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "编辑一级字典")
+    @PostMapping(value = "/category/update/status")
+    @RequiresPermissions(PermissionConstants.DICTIONARY_EDIT)
+    public Object updateCategoryStatus(@RequestBody Category category) {
+        try {
+            return ResultHolder.success(dictionaryService.updateCategory(category));
+        }catch (Exception e){
+            LogUtil.error(e.getMessage());
+            return ResultHolder.error(e.getMessage());
+        }
+    }
+
     @ApiOperation(value = "删除一级字典")
-    @PostMapping(value = "/delete/category/{id}")
+    @GetMapping(value = "/category/delete/{id}")
     @RequiresPermissions(PermissionConstants.DICTIONARY_DELETE)
     public Object deleteCategory(@PathVariable String id) {
         try {
@@ -55,7 +91,7 @@ public class DictionaryController {
     }
 
     @ApiOperation(value = "删除二级字典")
-    @PostMapping(value = "/delete/dictionary/{id}")
+    @GetMapping(value = "/dictionary/delete/{id}")
     @RequiresPermissions(PermissionConstants.DICTIONARY_DELETE)
     public Object deleteDictionary(@PathVariable String id) {
         try {

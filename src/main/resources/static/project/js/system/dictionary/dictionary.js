@@ -36,16 +36,16 @@ ProjectApp.controller('categoryController', function ($scope, $mdDialog, $docume
         $scope.columns.push({value: "", default: true});
     }
 
-    $scope.editDictionaryForm = function (item) {
+    $scope.editCategoryForm = function (item) {
         $scope.item = item;
-        $scope.formUrl = 'project/html/dictionary/dictionary-edit.html' + '?_t=' + window.appversion;
+        $scope.formUrl = 'project/html/system/dictionary/category_edit.html' + '?_t=' + window.appversion;
         $scope.toggleForm();
     };
 
-    $scope.editDictionarySubmit = function (item) {
+    $scope.editCategorySubmit = function (item) {
         var message = item.dictionaryId ? '修改完成' : '新增完成';
-        var url = item.dictionaryId ? 'dictionary/update' : 'dictionary/add';
-        item.dictionaryType = 'FIT2CLOUD'; // 默认的type
+        item.status = 1
+        var url = item.id ? 'dictionary/category/update' : 'dictionary/category/add';
         HttpUtils.post(url, item, function () {
             $scope.toggleForm();
             $scope.list();
@@ -53,16 +53,16 @@ ProjectApp.controller('categoryController', function ($scope, $mdDialog, $docume
         });
     };
 
-    $scope.editDictionaryStatus = function (item) {
-        HttpUtils.post("dictionary/update", item, function () {
+    $scope.editCategoryStatus = function (item) {
+        HttpUtils.post("dictionary/category/update/status", item, function () {
             Notification.success('修改完成');
         });
     };
 
-    $scope.deleteDictionary = function (item) {
-        Notification.confirm('确认删除此标签?', function () {
+    $scope.deleteCategory = function (item) {
+        Notification.confirm('确认删除此一级字典?', function () {
             // 确认删除
-            HttpUtils.get('dictionary/delete/' + item.dictionaryKey, function (response) {
+            HttpUtils.get('dictionary/category/delete/' + item.id, function (response) {
                 $scope.list();
                 Notification.success("删除成功");
             });

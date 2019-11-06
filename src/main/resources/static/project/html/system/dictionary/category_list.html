@@ -3,7 +3,7 @@
         <md-toolbar class="content-toolbar">
             <div class="md-toolbar-tools">
                 <div>一级字典管理</div>
-                <md-button class="md-primary" ng-click="addForm({})" has-permission="DICTIONARY:READ+CREATE">
+                <md-button class="md-primary" ng-click="editCategoryForm({})" has-permission="DICTIONARY:READ+CREATE">
                     <md-icon>add_circle_outline</md-icon>
                     创建</md-button>
             </div>
@@ -31,7 +31,7 @@
                             <td>{{item.name}}</td>
                             <td>
                                 <md-switch class="md-primary" aria-label="status" ng-model="item.status"
-                                           ng-change="editTagStatus(item)"
+                                           ng-change="editCategoryStatus(item)"
                                            has-permission="DICTIONARY:READ+EDIT">
                                 </md-switch>
                                 <span lack-permission="DICTIONARY:READ+EDIT">{{item.status}}</span>
@@ -40,13 +40,13 @@
                                 <!--设置名成加op="'其他名称'"，默认的名称为"操作"；设置宽度加width="4 或其他整数"-->
                                 <table-menus>
                                     <md-menu-item has-permission="DICTIONARY:READ+EDIT">
-                                        <md-button ng-click="editTagForm(item)">
+                                        <md-button ng-click="editCategoryForm(item)">
                                             <md-icon class="md-18">edit</md-icon>
                                             编辑
                                         </md-button>
                                     </md-menu-item>
                                     <md-menu-item has-permission="DICTIONARY:READ+DELETE">
-                                        <md-button ng-click="deleteTag(item)">
+                                        <md-button ng-click="deleteCategory(item)">
                                             <md-icon>delete</md-icon>
                                             删除
                                         </md-button>

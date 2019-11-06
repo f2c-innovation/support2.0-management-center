@@ -3,6 +3,7 @@ package com.fit2cloud.support.service;
 import com.fit2cloud.commons.server.base.domain.Category;
 import com.fit2cloud.commons.server.base.domain.Dictionary;
 import com.fit2cloud.commons.server.base.mapper.CategoryMapper;
+import com.fit2cloud.commons.server.base.mapper.DictionaryMapper;
 import com.fit2cloud.support.dao.ext.ExtDictionaryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,9 @@ public class DictionaryService {
     @Resource
     private ExtDictionaryMapper extDictionaryMapper;
 
+    @Resource
+    private DictionaryMapper dictionaryMapper;
+
     public List<Category> getCategoryList(Category category){
         return extDictionaryMapper.getCategoryList(category);
     }
@@ -28,12 +32,20 @@ public class DictionaryService {
         return extDictionaryMapper.getDictionaryList(dictionary);
     }
 
+    public int addCategory(Category category) {
+        return categoryMapper.insertSelective(category);
+    }
+
+    public int updateCategory(Category category) {
+        return categoryMapper.updateByPrimaryKeySelective(category);
+    }
+
     public Object deleteCategory(String id) {
-        return extDictionaryMapper.updateCategory(id);
+        return categoryMapper.deleteByPrimaryKey(id);
     }
 
     public Object deleteDictionary(String id) {
-        return extDictionaryMapper.updateDictionary(id);
+        return dictionaryMapper.deleteByPrimaryKey(id);
     }
 
 }
