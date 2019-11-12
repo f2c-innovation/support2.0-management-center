@@ -11,7 +11,7 @@ import com.fit2cloud.commons.utils.EncryptUtils;
 import com.fit2cloud.commons.utils.LogUtil;
 import com.fit2cloud.commons.utils.UUIDUtil;
 import com.fit2cloud.support.common.constants.UserConstants;
-import com.fit2cloud.support.common.constants.utils.MD5Util;
+import com.fit2cloud.support.common.utils.MD5Util;
 import com.fit2cloud.support.dao.ExtraDataLogMapper;
 import com.fit2cloud.support.dao.ExtraUserLogMapper;
 import com.fit2cloud.support.dao.ext.ExtExtraUserLogMapper;

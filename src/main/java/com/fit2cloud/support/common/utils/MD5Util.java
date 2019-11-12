@@ -1,4 +1,4 @@
-package com.fit2cloud.support.common.constants.utils;
+package com.fit2cloud.support.common.utils;
 import java.security.MessageDigest;
 
 public class MD5Util {

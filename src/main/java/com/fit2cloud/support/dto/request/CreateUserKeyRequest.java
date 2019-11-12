@@ -3,7 +3,7 @@ package com.fit2cloud.support.dto.request;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Created by liqiang on 2018/11/22.
+ * Created by maguohao on 2018/11/22.
  */
 public class CreateUserKeyRequest {
 
