@@ -117,14 +117,14 @@
             </md-switch>
 
             <virtual-select-multiple
-                    name="workspaceIds{{$index}}"
+                    name="deptIds{{$index}}"
                     value="id"
                     label="name"
-                    items="workspaces"
-                    placeholder="添加工作空间"
-                    results="roleInfo.workspaceIds"
+                    items="depts"
+                    placeholder="添加部门"
+                    results="roleInfo.deptIds"
                     required="true"
-                    ng-if="roleInfo.roleType===roleConst.user && !roleInfo.workspace"
+                    ng-if="roleInfo.roleType===roleConst.user && !roleInfo.dept"
             ></virtual-select-multiple>
 
             <virtual-select

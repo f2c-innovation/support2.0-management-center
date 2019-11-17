@@ -30,11 +30,11 @@
         sum(if(role.parent_id = 'ADMIN', 100000, if(role.parent_id = 'ORGADMIN', 500, if(role.parent_id = 'USER',
         1,0)))) countFraction,
         role.parent_id as parentId,
-        (select name from company t join user_role t1 on t.id = t1.source_id
-        where user_id = #{map.id}) as company
+        t.name as company
         from user
         left join user_role on user.id = user_role.user_id
         left join role on role.id = user_role.role_id
+        left join company t  on t.id = user_role.source_id
         where 1=1
         <if test="map.id!=null">
             and user.id like #{map.id}

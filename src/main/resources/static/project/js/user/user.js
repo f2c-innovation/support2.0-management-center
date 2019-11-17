@@ -314,7 +314,7 @@ ProjectApp.controller('UserController', function ($scope, HttpUtils, FilterSearc
             }
 
             HttpUtils.get("department", function (rep) {
-                $scope.workspaces = rep.data;
+                $scope.depts = rep.data;
             });
         };
 
