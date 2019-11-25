@@ -180,24 +180,7 @@
           ]
         },
         {
-          "id": "price-setting",
           "order": 2,
-          "title": "服务商设置",
-          "name": "provider_setting",
-          "url": "/provider_setting",
-          "templateUrl": "project/html/system/provider_setting.html",
-          "requiredPermissions": [
-            {
-              "role": "ADMIN",
-              "logical": "OR",
-              "permissions": [
-                "SYSTEM:OPRATE"
-              ]
-            }
-          ]
-        },
-        {
-          "order": 3,
           "title": "服务等级",
           "name": "grade_service",
           "url": "/grade_service",
@@ -207,13 +190,26 @@
               "role": "ADMIN",
               "logical": "OR",
               "permissions": [
-                "SYSTEM:OPRATE"
+                "GRADEERVICE:READ",
+                "GRADEERVICE:READ+CREATE",
+                "GRADEERVICE:READ+EDIT",
+                "GRADEERVICE:READ+DELETE"
+              ]
+            },
+            {
+              "role": "ORGADMIN",
+              "logical": "OR",
+              "permissions": [
+                "GRADEERVICE:READ",
+                "GRADEERVICE:READ+CREATE",
+                "GRADEERVICE:READ+EDIT",
+                "GRADEERVICE:READ+DELETE"
               ]
             }
           ]
         },
         {
-          "order": 4,
+          "order": 3,
           "title": "流程管理",
           "name": "process_management",
           "url": "/process_management",
@@ -229,7 +225,7 @@
           ]
         },
         {
-          "order": 5,
+          "order": 4,
           "title": "公告管理",
           "name": "notice_management",
           "url": "/notice_management",

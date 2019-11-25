@@ -44,12 +44,19 @@ public class PermissionConstants {
     public static final String AGENT_DELETE = "AGENT:READ+DELETE";
     //end  agent相关权限
 
-    // start 标签相关权限
+    // start 字典相关权限
     public static final String DICTIONARY_READ = "DICTIONARY:READ";
     public static final String DICTIONARY_CREATE = "DICTIONARY:READ+CREATE";
     public static final String DICTIONARY_EDIT = "DICTIONARY:READ+EDIT";
     public static final String DICTIONARY_DELETE = "DICTIONARY:READ+DELETE";
-    // end 标签相关权限
+    // end 字典相关权限
+
+    // start 服务等级相关权限
+    public static final String GRADEERVICE_READ = "GRADEERVICE:READ";
+    public static final String GRADEERVICE_CREATE = "GRADEERVICE:READ+CREATE";
+    public static final String GRADEERVICE_EDIT = "GRADEERVICE:READ+EDIT";
+    public static final String GRADEERVICE_DELETE = "GRADEERVICE:READ+DELETE";
+    // end 服务等级相关权限
 
     //start 插件管理
     public static final String PLUGIN_READ = "PLUGIN:READ";

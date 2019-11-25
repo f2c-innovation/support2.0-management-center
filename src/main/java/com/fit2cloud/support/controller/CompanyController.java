@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 公司
+ * @author mgh
+ * @date 2019/10/23
+ */
 @RequestMapping("/company")
 @RestController
 @Api(tags = "公司")

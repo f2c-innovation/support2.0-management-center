@@ -254,6 +254,41 @@
       ]
     },
     {
+      "id": "GRADEERVICE:READ",
+      "name": "查看服务等级",
+      "resourceId": "GRADEERVICE",
+      "parentRoles": [
+        "ADMIN",
+        "ORGADMIN",
+        "USER",
+        "other"
+      ]
+    },
+    {
+      "id": "GRADEERVICE:READ+CREATE",
+      "name": "创建服务等级",
+      "resourceId": "GRADEERVICE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "GRADEERVICE:READ+EDIT",
+      "name": "编辑服务等级",
+      "resourceId": "GRADEERVICE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "GRADEERVICE:READ+DELETE",
+      "name": "删除服务等级",
+      "resourceId": "GRADEERVICE",
+      "parentRoles": [
+        "ADMIN"
+      ]
+    },
+    {
       "id": "SYSTEM:OPRATE",
       "name": "系统管理",
       "resourceId": "SYSTEM",
